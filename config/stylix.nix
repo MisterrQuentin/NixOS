@@ -3,8 +3,8 @@
   stylix = {
     enable = true;
     image = builtins.fetchurl {
-      url = "file://${toString ./wallpapers/default.jpg}";
-      sha256 = "sha256:1vfwz3c2skyvqxw83ffaiy4vb5sx9ip2hnlabh6avp5b8ghyfliv";
+      url = "file://${toString ./wallpapers/0016.jpg}";
+      sha256 = "sha256:1flyyk3r2344in01w3gpvb9kif7v37bf14v2qsmi8qw8mfx0ds77";
     };
     polarity = "dark";
     opacity.terminal = 0.8;

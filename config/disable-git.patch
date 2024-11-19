@@ -1,0 +1,13 @@
+diff --git a/llm/generate/gen_common.sh b/llm/generate/gen_common.sh
+index 3825c155..d22eccd2 100644
+--- a/llm/generate/gen_common.sh
++++ b/llm/generate/gen_common.sh
+@@ -8,8 +8,6 @@ if [ -z "$2" ]; then
+   exit 1
+ fi
+ 
+-git submodule update --init --recursive
+-
+ # create the directory if it doesn't exist
+ mkdir -p $(dirname $2)
+

@@ -5,7 +5,7 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     home-manager.url = "github:nix-community/home-manager/master";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
-    stylix.url = "github:danth/stylix";
+    stylix.url = "github:danth/stylix/f8699483e46972f64b0dee5d5e41bf4bb142629b";  # Using the commit you found
     fine-cmdline = {
       url = "github:VonHeikemen/fine-cmdline.nvim";
       flake = false;
