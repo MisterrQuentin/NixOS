@@ -15,19 +15,6 @@
   # Modify this path if necessary to point to the correct location
   scriptDir = ../../config/dotlocalbin;
 
-  # Read the directory contents
-  scriptFiles = builtins.attrNames (builtins.readDir scriptDir);
-
-  # Generate the script file entries
-  scriptFileEntries = builtins.listToAttrs (map
-    (name: {
-      name = ".local/bin/${name}";
-      value = {
-        source = builtins.toPath "${scriptDir}/${name}";
-        executable = true;
-      };
-    })
-    scriptFiles);
   nsxiv-fullscreen = pkgs.callPackage ./nsxiv-wrapper.nix {};
   # need to let mutt-wizard handle this file
   # mbsyncExtraConfig = builtins.readFile ../../config/mbsync-config.txt;
@@ -63,49 +50,58 @@ in {
   ];
 
   # Place Files Inside Home Directory
-  home.file =
-    scriptFileEntries
-    // {
-      ".ssh/config".source = ../../config/ssh_config;
-      ".config/hypr/pyprland.toml".source = ../../config/pyprland.toml;
-      ".config/alacritty/alacritty.toml".source = ../../config/alacritty.toml;
-      "Pictures/Wallpapers" = {
-        source = ../../config/wallpapers;
-        recursive = true;
-      };
-      ".config/wlogout/icons" = {
-        source = ../../config/wlogout;
-        recursive = true;
-      };
-      ".face.icon".source = ../../config/face.jpg;
-      ".config/face.jpg".source = ../../config/face.jpg;
-      ".config/swappy/config".text = ''
-        [Default]
-        save_dir=/home/${username}/Pictures/Screenshots
-        save_filename_format=swappy-%Y%m%d-%H%M%S.png
-        show_panel=false
-        line_size=5
-        text_size=20
-        text_font=Ubuntu
-        paint_mode=brush
-        early_exit=true
-        fill_shape=false
-      '';
-      ".ollama/config".text = ''
-        {
-          "gpu": true
-        }
-      '';
-      # hyprland calls this on startup:
-      ".local/bin/restart-nextcloud-client.sh" = {
-        text = ''
-          #!/bin/sh
-          sleep 60
-          systemctl --user restart nextcloud-client.service
-        '';
-        executable = true;
-      };
+  home.file = let
+    scriptFiles = builtins.attrNames (builtins.readDir scriptDir);
+    scriptEntries = builtins.listToAttrs (map
+      (name: {
+        name = ".local/bin/${name}";
+        value = {
+          source = "${scriptDir}/${name}";
+          executable = true;
+        };
+      })
+      scriptFiles);
+  in scriptEntries // {
+    ".ssh/config".source = ../../config/ssh_config;
+    ".config/hypr/pyprland.toml".source = ../../config/pyprland.toml;
+    ".config/alacritty/alacritty.toml".source = ../../config/alacritty.toml;
+    # "Pictures/Wallpapers" = {
+    #   source = ../../config/wallpapers;
+    #   recursive = true;
+    # };
+    ".config/wlogout/icons" = {
+      source = ../../config/wlogout;
+      recursive = true;
     };
+    ".face.icon".source = ../../config/face.jpg;
+    ".config/face.jpg".source = ../../config/face.jpg;
+    ".config/zaney-wallpaper.jpg".source = ../../config/zaney-wallpaper.jpg;
+    ".config/swappy/config".text = ''
+      [Default]
+      save_dir=/home/${username}/Pictures/Screenshots
+      save_filename_format=swappy-%Y%m%d-%H%M%S.png
+      show_panel=false
+      line_size=5
+      text_size=20
+      text_font=Ubuntu
+      paint_mode=brush
+      early_exit=true
+      fill_shape=false
+    '';
+    ".ollama/config".text = ''
+      {
+        "gpu": true
+      }
+    '';
+    ".local/bin/restart-nextcloud-client.sh" = {
+      text = ''
+        #!/bin/sh
+        sleep 60
+        systemctl --user restart nextcloud-client.service
+      '';
+      executable = true;
+    };
+  };
 
   services.udiskie.enable = true;
   services.udiskie.tray = "always";
@@ -310,12 +306,15 @@ in {
   };
 
   # Styling Options
-  stylix.targets.yazi.enable = true;
-  stylix.targets.waybar.enable = false;
-  stylix.targets.rofi.enable = false;
-  stylix.targets.hyprland.enable = false;
-  stylix.targets.tmux.enable = true;
-  stylix.targets.neovim.enable = true;
+  stylix.targets = {
+    yazi.enable = true;
+    waybar.enable = false;
+    rofi.enable = false;
+    hyprland.enable = false;
+    hyprlock.enable = false;  # Add this line
+    tmux.enable = true;
+    neovim.enable = true;
+  };
   gtk = {
     iconTheme = {
       name = "Papirus-Dark";
@@ -425,6 +424,7 @@ in {
     SAVEHIST = 1000000;
     SYSTEMD_PAGER = "${pkgs.neovim}/bin/nvim";
     BAT_THEME = "Monokai Extended Origin";
+    MANPAGER = "nvim +Man!";
   };
 
   programs = {
@@ -770,6 +770,40 @@ in {
           hide_cursor = true;
           no_fade_in = false;
         };
+        background = [
+          {
+            path = "/home/${username}/.config/zaney-wallpaper.jpg";
+            blur_passes = 3;
+            blur_size = 8;
+          }
+        ];
+        image = [
+          {
+            path = "/home/${username}/.config/face.jpg";
+            size = 350;
+            border_size = 4;
+            border_color = "rgb(0C96F9)";
+            rounding = -1; # Negative means circle
+            position = "0, 200";
+            halign = "center";
+            valign = "center";
+          }
+        ];
+        input-field = [
+          {
+            size = "200, 50";
+            position = "0, -80";
+            monitor = "";
+            dots_center = true;
+            fade_on_empty = false;
+            font_color = "rgb(CFE6F4)";
+            inner_color = "rgb(657DC2)";
+            outer_color = "rgb(0D0E15)";
+            outline_thickness = 5;
+            placeholder_text = "Password...";
+            shadow_passes = 2;
+          }
+        ];
       };
     };
   };

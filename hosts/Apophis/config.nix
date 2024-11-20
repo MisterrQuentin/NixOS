@@ -18,6 +18,7 @@ in
     ./hardware.nix
     ./users.nix
     ./qtodotxt.nix
+    ../../config/stylix.nix
     # ../../modules/amd-drivers.nix
     ../../modules/nvidia-drivers.nix
     # ../../modules/nvidia-prime-drivers.nix
@@ -57,15 +58,6 @@ in
     # plymouth.enable = true;
   };
 
-  # LUKS encryption
- # boot.initrd.luks.devices = {
- #   crypted = {
- #     device = "/dev/disk/by-uuid/48781bd8-267a-4417-a4a3-be84bd59ac5b";
- #     preLVM = true;
- #     allowDiscards = true;
- #   };
- # };
-
 #Put appImages in the /opt diretory:
   # Create /opt/appimages directory
   system.activationScripts = {
@@ -82,59 +74,6 @@ in
     chmod 777 /var/cache/tuigreet
   '';
 
-  # Styling Options
-  stylix = {
-    enable = true;
-    image = builtins.fetchurl {
-      url = "file://${toString ../../config/wallpapers/0169.jpg}";
-      sha256 = "sha256:00vm1zblizklx7bvsmmrrzmk7qmgln4xkrgalk6dmdbg8jdsgpjn"; # Leave empty first, Nix will tell you the correct hash
-    };
-    # base16Scheme = {
-    #   base00 = "232136";
-    #   base01 = "2a273f";
-    #   base02 = "393552";
-    #   base03 = "6e6a86";
-    #   base04 = "908caa";
-    #   base05 = "e0def4";
-    #   base06 = "e0def4";
-    #   base07 = "56526e";
-    #   base08 = "eb6f92";
-    #   base09 = "f6c177";
-    #   base0A = "ea9a97";
-    #   base0B = "3e8fb0";
-    #   base0C = "9ccfd8";
-    #   base0D = "c4a7e7";
-    #   base0E = "f6c177";
-    #   base0F = "56526e";
-    # };
-    polarity = "dark";
-    opacity.terminal = 0.8;
-    cursor.package = pkgs.bibata-cursors;
-    cursor.name = "Bibata-Modern-Ice";
-    # cursor.package = pkgs.banana-cursor;
-    # cursor.name = "Banana";
-    cursor.size = 48;
-    fonts = {
-      monospace = {
-        package = pkgs.nerdfonts.override { fonts = [ "JetBrainsMono" ]; };
-        name = "JetBrainsMono Nerd Font Mono";
-      };
-      sansSerif = {
-        package = pkgs.montserrat;
-        name = "Montserrat";
-      };
-      serif = {
-        package = pkgs.montserrat;
-        name = "Montserrat";
-      };
-      sizes = {
-        applications = 22;
-        terminal = 22;
-        desktop = 22;
-        popups = 22;
-      };
-    };
-  };
 
   # Extra Module Options
   # drivers.amdgpu.enable = false;
@@ -713,7 +652,7 @@ in
     fstrim.enable = true;
     gvfs.enable = true;
     openssh.enable = true;
-    # flatpak.enable = false;
+    flatpak.enable = true;
     printing = {
       enable = true;
       drivers = [ pkgs.hplip pkgs.hplipWithPlugin ];
