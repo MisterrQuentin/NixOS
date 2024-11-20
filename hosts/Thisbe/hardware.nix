@@ -13,6 +13,15 @@
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
 
+  # LUKS encryption
+ boot.initrd.luks.devices = {
+   crypted = {
+     device = "/dev/disk/by-uuid/48781bd8-267a-4417-a4a3-be84bd59ac5b";
+     preLVM = true;
+     allowDiscards = true;
+   };
+ };
+
   fileSystems."/" =
     { device = "/dev/disk/by-uuid/d4356db9-f606-497f-86d9-b08bf65534fc";
       fsType = "ext4";
