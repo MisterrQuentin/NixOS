@@ -424,6 +424,7 @@ in {
     SAVEHIST = 1000000;
     SYSTEMD_PAGER = "${pkgs.neovim}/bin/nvim";
     BAT_THEME = "Monokai Extended Origin";
+    MANPAGER = "nvim +Man!";
   };
 
   programs = {
