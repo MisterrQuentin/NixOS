@@ -1,6 +1,7 @@
 {
   pkgs,
   username,
+  newuser,
   ...
 }:
 
@@ -28,14 +29,25 @@ in
       packages = with pkgs; [
       ];
     };
-    # "newuser" = {
-    #   homeMode = "755";
-    #   isNormalUser = true;
-    #   description = "New user account";
-    #   extraGroups = [ "networkmanager" "wheel" "libvirtd" ];
-    #   shell = pkgs.bash;
-    #   ignoreShellProgramCheck = true;
-    #   packages = with pkgs; [];
-    # };
+    "${newuser}" = {
+      homeMode = "755";
+      isNormalUser = true;
+      description = "${gitUsername}";
+      extraGroups = [
+        "networkmanager"
+        "wheel"
+        "libvirtd"
+        "scanner"
+        "lp"
+        "scanner"
+        "lpadmin"
+      ];
+      shell = pkgs.zsh;
+      #shell = pkgs.bash;
+      ignoreShellProgramCheck = true;
+      initialPassword = "password";  # Add this for the new user
+      packages = with pkgs; [
+      ];
+    };
   };
 }

@@ -10,6 +10,10 @@
       url = "github:VonHeikemen/fine-cmdline.nvim";
       flake = false;
     };
+    vim-maximizer = {  # Add this input
+      url = "github:szw/vim-maximizer";
+      flake = false;
+    };
   };
 
   outputs = { self, nixpkgs, home-manager, ... }@inputs:
@@ -17,6 +21,7 @@
       system = "x86_64-linux";
       host = "Thisbe";
       username = "bimmer";
+      newuser = "jakoolit";  # Add this line
     in
     {
       nixosConfigurations = {
@@ -24,7 +29,7 @@
           inherit system;
           specialArgs = {
             inherit inputs;
-            inherit username;
+            inherit username newuser;
             inherit host;
           };
           modules = [
@@ -33,7 +38,7 @@
             home-manager.nixosModules.home-manager
             {
               home-manager.extraSpecialArgs = {
-                inherit username;
+                inherit username newuser;
                 inherit inputs;
                 inherit host;
               };
@@ -41,7 +46,9 @@
               home-manager.useUserPackages = true;
               home-manager.backupFileExtension = "backup";
               home-manager.users.${username} = import ./hosts/${host}/home.nix;
-            }
+              # Add new user's home configuration
+              home-manager.users.${newuser} = import ./hosts/${host}/newuser_home.nix;  
+             }
           ];
         };
       };

@@ -1,7 +1,7 @@
 {
   pkgs,
   lib,
-  username,
+  newuser,
   config,
   host,
   ...
@@ -21,8 +21,8 @@
   pnpm = pkgs.nodePackages.pnpm;
 in {
   # Home Manager Settings
-  home.username = "${username}";
-  home.homeDirectory = "/home/${username}";
+  home.username = "${newuser}";
+  home.homeDirectory = "/home/${newuser}";
   home.stateVersion = "23.11";
   home.enableNixpkgsReleaseCheck = false;
 
@@ -78,7 +78,7 @@ in {
     ".config/zaney-wallpaper.jpg".source = ../../config/zaney-wallpaper.jpg;
     ".config/swappy/config".text = ''
       [Default]
-      save_dir=/home/${username}/Pictures/Screenshots
+      save_dir=/home/${newuser}/Pictures/Screenshots
       save_filename_format=swappy-%Y%m%d-%H%M%S.png
       show_panel=false
       line_size=5
@@ -109,7 +109,7 @@ in {
   # Ensure the ~/.config/Yubico directory exists
   home.activation = {
     createYubicoConfig = lib.hm.dag.entryAfter ["writeBoundary"] ''
-      $DRY_RUN_CMD mkdir -p $VERBOSE_ARG /home/${username}/.config/Yubico
+      $DRY_RUN_CMD mkdir -p $VERBOSE_ARG /home/${newuser}/.config/Yubico
     '';
   };
 
@@ -342,7 +342,7 @@ in {
     (import ../../scripts/nvidia-offload.nix {inherit pkgs;})
     (import ../../scripts/wallsetter.nix {
       inherit pkgs;
-      inherit username;
+      inherit newuser;
     })
     (import ../../scripts/web-search.nix {inherit pkgs;})
     (import ../../scripts/rofi-launcher.nix {inherit pkgs;})
@@ -748,8 +748,8 @@ in {
         fi
       '';
       shellAliases = {
-        fr = "nh os switch --hostname ${host} /home/${username}/zaneyos";
-        fu = "nh os switch --hostname ${host} --update /home/${username}/zaneyos";
+        fr = "nh os switch --hostname ${host} /home/${newuser}/zaneyos";
+        fu = "nh os switch --hostname ${host} --update /home/${newuser}/zaneyos";
         zu = "sh <(curl -L https://gitlab.com/Zaney/zaneyos/-/raw/main/install-zaneyos.sh)";
         ncg = "nix-collect-garbage --delete-old && sudo nix-collect-garbage -d && sudo /run/current-system/bin/switch-to-configuration boot";
         v = "nvim";
@@ -772,14 +772,14 @@ in {
         };
         background = [
           {
-            path = "/home/${username}/.config/zaney-wallpaper.jpg";
+            path = "/home/${newuser}/.config/zaney-wallpaper.jpg";
             blur_passes = 3;
             blur_size = 8;
           }
         ];
         image = [
           {
-            path = "/home/${username}/.config/face.jpg";
+            path = "/home/${newuser}/.config/face.jpg";
             size = 350;
             border_size = 4;
             border_color = "rgb(0C96F9)";

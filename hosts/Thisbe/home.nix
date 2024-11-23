@@ -32,7 +32,8 @@ in {
     ../../config/fastfetch
     ../../config/hyprland.nix
     ../../config/yt-dlp.nix
-    ../../config/neovim.nix
+    # ../../config/neovim.nix
+    ../../config/neovim_josean.nix
     ../../config/tmux.nix
     ../../config/qutebrowser.nix
     ../../config/hn.nix
@@ -61,47 +62,49 @@ in {
         };
       })
       scriptFiles);
-  in scriptEntries // {
-    ".ssh/config".source = ../../config/ssh_config;
-    ".config/hypr/pyprland.toml".source = ../../config/pyprland.toml;
-    ".config/alacritty/alacritty.toml".source = ../../config/alacritty.toml;
-    # "Pictures/Wallpapers" = {
-    #   source = ../../config/wallpapers;
-    #   recursive = true;
-    # };
-    ".config/wlogout/icons" = {
-      source = ../../config/wlogout;
-      recursive = true;
-    };
-    ".face.icon".source = ../../config/face.jpg;
-    ".config/face.jpg".source = ../../config/face.jpg;
-    ".config/zaney-wallpaper.jpg".source = ../../config/zaney-wallpaper.jpg;
-    ".config/swappy/config".text = ''
-      [Default]
-      save_dir=/home/${username}/Pictures/Screenshots
-      save_filename_format=swappy-%Y%m%d-%H%M%S.png
-      show_panel=false
-      line_size=5
-      text_size=20
-      text_font=Ubuntu
-      paint_mode=brush
-      early_exit=true
-      fill_shape=false
-    '';
-    ".ollama/config".text = ''
-      {
-        "gpu": true
-      }
-    '';
-    ".local/bin/restart-nextcloud-client.sh" = {
-      text = ''
-        #!/bin/sh
-        sleep 60
-        systemctl --user restart nextcloud-client.service
+  in
+    scriptEntries
+    // {
+      ".ssh/config".source = ../../config/ssh_config;
+      ".config/hypr/pyprland.toml".source = ../../config/pyprland.toml;
+      ".config/alacritty/alacritty.toml".source = ../../config/alacritty.toml;
+      # "Pictures/Wallpapers" = {
+      #   source = ../../config/wallpapers;
+      #   recursive = true;
+      # };
+      ".config/wlogout/icons" = {
+        source = ../../config/wlogout;
+        recursive = true;
+      };
+      ".face.icon".source = ../../config/face.jpg;
+      ".config/face.jpg".source = ../../config/face.jpg;
+      ".config/zaney-wallpaper.jpg".source = ../../config/zaney-wallpaper.jpg;
+      ".config/swappy/config".text = ''
+        [Default]
+        save_dir=/home/${username}/Pictures/Screenshots
+        save_filename_format=swappy-%Y%m%d-%H%M%S.png
+        show_panel=false
+        line_size=5
+        text_size=20
+        text_font=Ubuntu
+        paint_mode=brush
+        early_exit=true
+        fill_shape=false
       '';
-      executable = true;
+      ".ollama/config".text = ''
+        {
+          "gpu": true
+        }
+      '';
+      ".local/bin/restart-nextcloud-client.sh" = {
+        text = ''
+          #!/bin/sh
+          sleep 60
+          systemctl --user restart nextcloud-client.service
+        '';
+        executable = true;
+      };
     };
-  };
 
   services.udiskie.enable = true;
   services.udiskie.tray = "always";
@@ -311,7 +314,7 @@ in {
     waybar.enable = false;
     rofi.enable = false;
     hyprland.enable = false;
-    hyprlock.enable = false;  # Add this line
+    hyprlock.enable = false; # Add this line
     tmux.enable = true;
     neovim.enable = true;
   };
