@@ -1,39 +1,57 @@
+# users.nix
 {
   pkgs,
   username,
+  secondUser ? null,  # optional parameter for alice
   ...
 }: let
   inherit (import ./variables.nix) gitUsername;
-  currentUser = "bimmer"; # Your original username
+  sharedGroup = "shared";
+  sharedMode = "775";
 in {
   users = {
-    # Keep your original user
-    users."${currentUser}" = {
-      isNormalUser = true;
-      extraGroups = [ "wheel" "networkmanager" ];
-      # Keep your existing password
-    };
+    groups.${sharedGroup} = {};
 
-    # Add the new user
-    users."${username}" = {
-      homeMode = "755";
-      password = "password";
-      isNormalUser = true;
-      description = "${gitUsername}";
-      extraGroups = [
-        "networkmanager"
-        "wheel"
-        "libvirtd"
-        "scanner"
-        "lp"
-        "video"
-        "input"
-        "audio"
-      ];
-
-      packages = with pkgs; [
-      ];
-    };
+    users = {
+      # bimmer configuration
+      "${username}" = {
+        homeMode = "${sharedMode}";
+        isNormalUser = true;
+        description = "${gitUsername}";
+        extraGroups = [
+          "networkmanager"
+          "wheel"
+          "libvirtd"
+          "scanner"
+          "lp"
+          "video"
+          "input"
+          "audio"
+          sharedGroup
+        ];
+        packages = with pkgs; [];
+      };
+    } // (if secondUser != null then {
+      # alice configuration (only created if secondUser is specified)
+      "${secondUser}" = {
+        homeMode = "${sharedMode}";
+        isNormalUser = true;
+        password = "password";
+        description = "${gitUsername}";
+        extraGroups = [
+          "networkmanager"
+          "wheel"
+          "libvirtd"
+          "scanner"
+          "lp"
+          "video"
+          "input"
+          "audio"
+          sharedGroup
+        ];
+        packages = with pkgs; [];
+      };
+    } else {});
 
     defaultUserShell = pkgs.zsh;
   };
@@ -65,3 +83,4 @@ in {
     };
   };
 }
+

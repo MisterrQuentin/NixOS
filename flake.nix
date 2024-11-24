@@ -5,13 +5,12 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     home-manager.url = "github:nix-community/home-manager/master";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
-    stylix.url = "github:danth/stylix/f8699483e46972f64b0dee5d5e41bf4bb142629b"; # Using the commit you found
+    stylix.url = "github:danth/stylix/f8699483e46972f64b0dee5d5e41bf4bb142629b";
     fine-cmdline = {
       url = "github:VonHeikemen/fine-cmdline.nvim";
       flake = false;
     };
     vim-maximizer = {
-      # Add this input
       url = "github:szw/vim-maximizer";
       flake = false;
     };
@@ -26,6 +25,11 @@
     system = "x86_64-linux";
     host = "Thisbe";
     username = "bimmer";
+    newUsers = {
+      alice = "alice";
+      bob = "bob";
+      carol = "carol";
+    };
   in {
     nixosConfigurations = {
       "${host}" = nixpkgs.lib.nixosSystem {
@@ -33,6 +37,7 @@
         specialArgs = {
           inherit inputs;
           inherit username;
+          inherit newUsers;
           inherit host;
         };
         modules = [
@@ -55,3 +60,4 @@
     };
   };
 }
+

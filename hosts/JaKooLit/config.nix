@@ -107,6 +107,12 @@ in {
   #  theme = "nixos";
   #};
 
+  # Add this section to set the permissions for the tuigreet cache directory
+  system.activationScripts.tuigreet-permissions = ''
+    mkdir -p /var/cache/tuigreet
+    chmod 777 /var/cache/tuigreet
+  '';
+
   # Extra Module Options
   drivers.amdgpu.enable = false;
   drivers.intel.enable = false;
@@ -315,8 +321,8 @@ in {
       vt = 3;
       settings = {
         default_session = {
-          user = username;
-          command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --cmd Hyprland"; # start Hyprland with a TUI login manager
+          # user = username;
+          command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --remember --cmd Hyprland"; # start Hyprland with a TUI login manager
         };
       };
     };

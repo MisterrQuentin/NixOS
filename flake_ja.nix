@@ -13,12 +13,10 @@
     ...
   }: let
     system = "x86_64-linux";
-    # Keep both hostnames - original and new
-    currentHost = "Thisbe";
+    thisbeUser = "bimmer";
+    jakoolUser = "alice";
+    hostName = "Thisbe";
     newHost = "JaKooLit";
-    # Keep both usernames - original and new
-    currentUser = "bimmer";
-    newUser = "alice";
 
     pkgs = import nixpkgs {
       inherit system;
@@ -28,25 +26,24 @@
     };
   in {
     nixosConfigurations = {
-      # Keep your original configuration
-      "${currentHost}" = nixpkgs.lib.nixosSystem {
+      "${hostName}" = nixpkgs.lib.nixosSystem {
         inherit system;
         specialArgs = {
           inherit inputs;
-          username = currentUser;
-          host = currentHost;
+          username = thisbeUser;
+          host = hostName;
         };
         modules = [
-          ./hosts/${currentHost}/config.nix
+          ./hosts/${hostName}/config.nix
         ];
       };
 
-      # Add the new configuration
-      "${newHost}" = nixpkgs.lib.nixosSystem rec {
+      "${newHost}" = nixpkgs.lib.nixosSystem {
         specialArgs = {
           inherit system;
           inherit inputs;
-          username = newUser;
+          username = jakoolUser;  # alice is now the primary user
+          secondUser = thisbeUser;  # bimmer becomes the second user
           host = newHost;
         };
         modules = [
@@ -57,3 +54,4 @@
     };
   };
 }
+

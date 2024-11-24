@@ -738,9 +738,9 @@ in {
         theme = "agnoster";
       };
       initExtra = ''
-        if [ -f "${config.home.profileDirectory}/etc/profile.d/hm-session-vars.sh" ]; then
-          . "${config.home.profileDirectory}/etc/profile.d/hm-session-vars.sh"
-        fi
+        # if [ -f "${config.home.profileDirectory}/etc/profile.d/hm-session-vars.sh" ]; then
+        #   . "${config.home.profileDirectory}/etc/profile.d/hm-session-vars.sh"
+        # fi
         source ${scriptFile}
         # Add zsh-completions to fpath
         fpath+=${pkgs.zsh-completions}/share/zsh/site-functions

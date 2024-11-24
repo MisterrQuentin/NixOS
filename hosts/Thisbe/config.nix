@@ -248,6 +248,7 @@ in {
     pyprland
     alacritty
     zathura
+    zip
     fd
     libvirt
     parted

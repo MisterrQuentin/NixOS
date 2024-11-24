@@ -87,6 +87,16 @@ keymap = [
 	{ on = [ "m", "m" ], run = "linemode mtime",       desc = "Set linemode to mtime" },
 	{ on = [ "m", "n" ], run = "linemode none",        desc = "Set linemode to none" },
 
+  # Rebuild the flake
+{ on = [ "c", "r" ], run = """
+    shell 'nh os switch --hostname Thisbe --update $HOME/zaneyos' --block --confirm
+""", desc = "Rebuild the flake" },
+
+  # Paste 
+{ on = [ "c", "p" ], run = """
+    shell 'wl-paste > "$@"' --block --confirm
+""", desc = "Paste clipboard contents to file" },
+
 	# Copy
 	{ on = [ "c", "c" ], run = "copy path",             desc = "Copy the absolute path" },
 	{ on = [ "c", "d" ], run = "copy dirname",          desc = "Copy the path of the parent directory" },
@@ -95,6 +105,10 @@ keymap = [
 { on = [ "c", "z" ], run = """
     shell 'printf "Your Name:"; read name; zip "$name.zip" "$@"' --block --confirm
 """ },
+{ on = [ "c", "i" ], run = """
+    shell '\\cat "$@" | wl-copy' --block --confirm
+""", desc = "Copy file contents to clipboard" },
+
 	# Filter
 	{ on = [ "f" ], run = "filter --smart", desc = "Filter the files" },
 
