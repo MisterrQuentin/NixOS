@@ -104,6 +104,29 @@ in {
         '';
         executable = true;
       };
+      ".config/mutt/muttrc_local".text = ''
+        # common mutt definitions for all mailboxes
+        # you can have up to 10 commands separated by -c:
+        set editor = "nvim -c 'normal O' -c 'normal O' -c 'startinsert'"
+        #set editor="nvim  \"+/^$/\" \"+nohl\" \"+ normal o\" \"+startinsert\"
+        set date_format="%m/%d/%y %I:%M%p"
+        set confirmappend = no
+        set delete = yes
+        set signature=~/.config/mutt/sig.txt
+        #set signature = "python ~/Signature/Signature.py|"
+        set text_flowed = yes
+
+        macro index,pager A ";<save-message>=Archive\n" "move to Archive"
+        macro index,pager d ";<save-message>=Trash<enter>" "move to Trash"
+        # Reply to all recipients
+        bind index,pager G group-reply
+      '';
+
+      ".config/mutt/sig.txt".text = ''
+        "Paper is poverty, it is only the ghost of money, and not money itself."
+
+        — Thomas Jefferson 1788
+      '';
     };
 
   services.udiskie.enable = true;

@@ -5,16 +5,13 @@
   lib,
   host,
   username,
-  newuser,
   options,
   ...
-}:
-let
+}: let
   inherit (import ./variables.nix) keyboardLayout;
-  pythonConfigs = import ../../config/python.nix { inherit pkgs; };
+  pythonConfigs = import ../../config/python.nix {inherit pkgs;};
   myPython = pythonConfigs.basePython;
-in
-{
+in {
   imports = [
     ./hardware.nix
     ./users.nix
@@ -41,7 +38,7 @@ in
     # Bootloader.
     loader.systemd-boot.enable = true;
     loader.efi.canTouchEfiVariables = true;
-    blacklistedKernelModules = [ "nouveau" ];
+    blacklistedKernelModules = ["nouveau"];
     # Make /tmp a tmpfs
     # tmp = {
     #   useTmpfs = false;
@@ -59,7 +56,7 @@ in
     # plymouth.enable = true;
   };
 
-#Put appImages in the /opt diretory:
+  #Put appImages in the /opt diretory:
   # Create /opt/appimages directory
   system.activationScripts = {
     createAppImageDir = ''
@@ -75,15 +72,14 @@ in
     chmod 777 /var/cache/tuigreet
   '';
 
-
   # Extra Module Options
   # drivers.amdgpu.enable = false;
-   drivers.nvidia.enable = true;
-   # drivers.nvidia-prime = {
-   #    enable = true;
-   #    intelBusID = "PCI:0:2:0";
-   #    nvidiaBusID = "PCI:1:0:0";
-   # };
+  drivers.nvidia.enable = true;
+  # drivers.nvidia-prime = {
+  #    enable = true;
+  #    intelBusID = "PCI:0:2:0";
+  #    nvidiaBusID = "PCI:1:0:0";
+  # };
   # drivers.intel.enable = true;
   vm.guest-services.enable = false;
   # local.hardware-clock.enable = false;
@@ -91,7 +87,7 @@ in
   # Enable networking
   networking.networkmanager.enable = true;
   networking.hostName = host;
-  networking.timeServers = options.networking.timeServers.default ++ [ "pool.ntp.org" ];
+  networking.timeServers = options.networking.timeServers.default ++ ["pool.ntp.org"];
 
   # Set your time zone.
   time.timeZone = "America/Phoenix";
@@ -124,13 +120,12 @@ in
       tcpReadTimeOut = 15000;
       remoteDNSSubnet = 224;
       tcpConnectTimeOut = 8000;
-      proxies.nekoray =
-        {
-          enable = true;
-          type = "socks5";
-          host = "127.0.0.1";
-          port = 2080;
-        };
+      proxies.nekoray = {
+        enable = true;
+        type = "socks5";
+        host = "127.0.0.1";
+        port = 2080;
+      };
     };
     starship = {
       enable = true;
@@ -235,7 +230,7 @@ in
   documentation.man.enable = true;
   documentation.man.man-db.enable = true;
 
-  nix.nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
+  nix.nixPath = ["nixpkgs=${inputs.nixpkgs}"];
 
   environment.systemPackages = with pkgs; [
     vim
@@ -328,13 +323,19 @@ in
     android-udev-rules
     android-tools
 
-
     # neomutt and related progs:
     neomutt
     isync
     msmtp
-    mypy ruff
-    mutt-wizard pass notmuch imagemagick w3m lynx abook
+    mypy
+    ruff
+    mutt-wizard
+    pass
+    notmuch
+    imagemagick
+    w3m
+    lynx
+    abook
 
     # Yubikey
     gnupg
@@ -380,12 +381,12 @@ in
     binutils
     qrencode
     freetube
-    
+
     # Additional common build tools
     pkg-config
     cmake
 
-  # Optionally, add a convenient way to run AppImages
+    # Optionally, add a convenient way to run AppImages
     (writeShellScriptBin "run-appimage" ''
       ${appimage-run}/bin/appimage-run /opt/appimages/$1
     '')
@@ -399,26 +400,26 @@ in
 
     (writeScriptBin "music-layout" ''
       #!${pkgs.bash}/bin/bash
-      
+
       # Create new window or use existing one
       tmux new-window -n music || tmux select-window -t music
-      
+
       # Split the window vertically into 3 panes
       tmux split-window -v
       tmux split-window -h
-      
+
       # Select and run command in each pane
       tmux select-pane -t 0
       tmux send-keys "ncmpcpp -s media_library" C-m
-      
+
       tmux select-pane -t 1
       tmux send-keys "ncmpcpp -s playlist_editor" C-m
-      
+
       tmux select-pane -t 2
       tmux send-keys "ncmpcpp -s playlist" C-m
     '')
 
-# Wireguard control:
+    # Wireguard control:
     (writeScriptBin "wg-toggle" ''
       #!${stdenv.shell}
       WG_DIR="/etc/nixos/wireguard"
@@ -458,7 +459,7 @@ in
 
       # If we get here, WireGuard is not running, so show the menu
       echo "Select WireGuard configuration to activate:"
-      
+
       # Create array of config files
       configs=()
       while IFS= read -r -d $'\0' file; do
@@ -484,26 +485,26 @@ in
 
       # Convert choice to array index (0-based)
       ((choice--))
-      
+
       # Get selected config file
       selected_config="''${configs[$choice]}"
-      
+
       # Extract interface name from filename
       INTERFACE=$(basename "$selected_config" .conf)
-      
+
       # Activate the selected configuration
       wg-quick up "$selected_config"
       echo "WireGuard connected using $INTERFACE"
     '')
 
-  # Add a desktop file for each appimage here:
+    # Add a desktop file for each appimage here:
     (makeDesktopItem {
       name = "Nunchuk";
       desktopName = "Nunchuk";
       exec = "${pkgs.appimage-run}/bin/appimage-run /opt/appimages/nunchuk-linux-1.9.39.AppImage";
       icon = ""; # Leave empty if there's no icon
       comment = "Nunchuk Application";
-      categories = [ "Utility" ];
+      categories = ["Utility"];
       terminal = false;
     })
     (makeDesktopItem {
@@ -512,7 +513,7 @@ in
       exec = "${pkgs.appimage-run}/bin/appimage-run /opt/appimages/session-desktop-linux-x86_64-1.14.2.AppImage";
       icon = ""; # Leave empty if there's no icon
       comment = "Session Application";
-      categories = [ "Utility" ];
+      categories = ["Utility"];
       terminal = false;
     })
     (makeDesktopItem {
@@ -521,7 +522,7 @@ in
       exec = "${pkgs.appimage-run}/bin/appimage-run /opt/appimages/simplex-desktop-x86_64.AppImage";
       icon = ""; # Leave empty if there's no icon
       comment = "SimpleX Application";
-      categories = [ "Utility" ];
+      categories = ["Utility"];
       terminal = false;
     })
     (makeDesktopItem {
@@ -530,7 +531,7 @@ in
       exec = "${pkgs.appimage-run}/bin/appimage-run /opt/appimages/LM_Studio-0.3.2.AppImage";
       icon = ""; # Leave empty if there's no icon
       comment = "LM Studio Application";
-      categories = [ "Utility" ];
+      categories = ["Utility"];
       terminal = false;
     })
     (makeDesktopItem {
@@ -539,7 +540,7 @@ in
       exec = "${pkgs.appimage-run}/bin/appimage-run /opt/appimages/Logseq-linux-x64-0.10.9.AppImage";
       icon = ""; # Leave empty if there's no icon
       comment = "Logseq Application";
-      categories = [ "Utility" ];
+      categories = ["Utility"];
       terminal = false;
     })
   ];
@@ -555,7 +556,7 @@ in
 
   #yubikey stuff:
   services.pcscd.enable = true;
-  services.udev.packages = [ pkgs.yubikey-personalization ];
+  services.udev.packages = [pkgs.yubikey-personalization];
   programs.gnupg.agent = {
     enable = true;
     enableSSHSupport = true;
@@ -589,7 +590,7 @@ in
   # Enable scanner support if your printer has scanning capabilities
   hardware.sane = {
     enable = true;
-    extraBackends = [ pkgs.hplipWithPlugin ];
+    extraBackends = [pkgs.hplipWithPlugin];
   };
 
   # Services to start
@@ -652,12 +653,12 @@ in
     flatpak.enable = true;
     printing = {
       enable = true;
-      drivers = [ pkgs.hplip pkgs.hplipWithPlugin ];
+      drivers = [pkgs.hplip pkgs.hplipWithPlugin];
       browsing = true;
       defaultShared = true;
       # Add CUPS admin rights
-      allowFrom = [ "all" ];
-      listenAddresses = [ "*:631" ];
+      allowFrom = ["all"];
+      listenAddresses = ["*:631"];
     };
     gnome.gnome-keyring.enable = true;
     avahi = {
@@ -688,39 +689,39 @@ in
     };
   };
 
-systemd.services.pull-open-webui = {
-  description = "Pull Open WebUI Docker image";
-  after = [ "network-online.target" ];
-  wants = [ "network-online.target" ];
-  serviceConfig = {
-    Type = "oneshot";
-    ExecStart = ''
-      ${pkgs.bash}/bin/bash -c '\
-        if ! ${pkgs.podman}/bin/podman image exists ghcr.io/open-webui/open-webui:main; then \
-          ${pkgs.podman}/bin/podman pull ghcr.io/open-webui/open-webui:main; \
-        fi'
-    '';
-    RemainAfterExit = true;
-    TimeoutStartSec = "30";
-    StartLimitIntervalSec = "300";  # 5 minutes, changed from StartLimitInterval
-    StartLimitBurst = "3";
-    FailureAction = "none";
-    SuccessAction = "none";
+  systemd.services.pull-open-webui = {
+    description = "Pull Open WebUI Docker image";
+    after = ["network-online.target"];
+    wants = ["network-online.target"];
+    serviceConfig = {
+      Type = "oneshot";
+      ExecStart = ''
+        ${pkgs.bash}/bin/bash -c '\
+          if ! ${pkgs.podman}/bin/podman image exists ghcr.io/open-webui/open-webui:main; then \
+            ${pkgs.podman}/bin/podman pull ghcr.io/open-webui/open-webui:main; \
+          fi'
+      '';
+      RemainAfterExit = true;
+      TimeoutStartSec = "30";
+      StartLimitIntervalSec = "300"; # 5 minutes, changed from StartLimitInterval
+      StartLimitBurst = "3";
+      FailureAction = "none";
+      SuccessAction = "none";
+    };
   };
-};
 
-systemd.services.open-webui = {
-  description = "Open WebUI";
-  after = [ "network.target" "podman.socket" ];  # Remove pull-open-webui.service from after
-  requires = [ "podman.socket" ];  # Remove pull-open-webui.service from requires
-  wants = [ "pull-open-webui.service" ];  # Add as a weak dependency instead
-  wantedBy = [ "multi-user.target" ];
-  # ... rest of the service config
-};
+  systemd.services.open-webui = {
+    description = "Open WebUI";
+    after = ["network.target" "podman.socket"]; # Remove pull-open-webui.service from after
+    requires = ["podman.socket"]; # Remove pull-open-webui.service from requires
+    wants = ["pull-open-webui.service"]; # Add as a weak dependency instead
+    wantedBy = ["multi-user.target"];
+    # ... rest of the service config
+  };
 
   # Ensure podman.socket is enabled
   systemd.sockets.podman = {
-    wantedBy = [ "sockets.target" ];
+    wantedBy = ["sockets.target"];
   };
   # systemd.services.flatpak-repo = {
   #   path = [ pkgs.flatpak ];
@@ -782,8 +783,8 @@ systemd.services.open-webui = {
         "nix-command"
         "flakes"
       ];
-      substituters = [ "https://hyprland.cachix.org" ];
-      trusted-public-keys = [ "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc=" ];
+      substituters = ["https://hyprland.cachix.org"];
+      trusted-public-keys = ["hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="];
     };
     gc = {
       automatic = true;
@@ -801,16 +802,16 @@ systemd.services.open-webui = {
   };
 
   # Wireguard: UNCOMMENT to have a wireguard tunnel. put the config files in /etc/nixos/wireguard:
-# .rw-r--r-- 290 root 30 Sep 08:35  jp-osa-wg-001.conf
-# .rw-r--r-- 291 root 30 Sep 08:35  jp-osa-wg-002.conf
-# .rw-r--r-- 291 root 30 Sep 08:35  jp-osa-wg-003.conf
-# .rw-r--r-- 291 root 30 Sep 08:35  jp-osa-wg-004.conf
-# .rw-r--r-- 273 root 30 Sep 08:35  jp-tok-jp2.conf
-# .rw-r--r-- 291 root 30 Sep 08:35  jp-tyo-wg-001.conf
-# .rw-r--r-- 291 root 30 Sep 08:35  jp-tyo-wg-002.conf
-# .rw-r--r-- 291 root 30 Sep 08:35  jp-tyo-wg-201.conf
-# .rw-r--r-- 289 root 30 Sep 08:35  jp-tyo-wg-202.conf
-# .rw-r--r-- 290 root 30 Sep 08:35  jp-tyo-wg-203.conf
+  # .rw-r--r-- 290 root 30 Sep 08:35  jp-osa-wg-001.conf
+  # .rw-r--r-- 291 root 30 Sep 08:35  jp-osa-wg-002.conf
+  # .rw-r--r-- 291 root 30 Sep 08:35  jp-osa-wg-003.conf
+  # .rw-r--r-- 291 root 30 Sep 08:35  jp-osa-wg-004.conf
+  # .rw-r--r-- 273 root 30 Sep 08:35  jp-tok-jp2.conf
+  # .rw-r--r-- 291 root 30 Sep 08:35  jp-tyo-wg-001.conf
+  # .rw-r--r-- 291 root 30 Sep 08:35  jp-tyo-wg-002.conf
+  # .rw-r--r-- 291 root 30 Sep 08:35  jp-tyo-wg-201.conf
+  # .rw-r--r-- 289 root 30 Sep 08:35  jp-tyo-wg-202.conf
+  # .rw-r--r-- 290 root 30 Sep 08:35  jp-tyo-wg-203.conf
   # networking.wg-quick.interfaces.wg0.configFile = "/etc/nixos/wireguard/jp-tok-jp2.conf";
   # networking.wg-quick.interfaces.wg0.configFile = "/etc/nixos/wireguard/tw-tai-tw1.conf";
   # networking.wg-quick.interfaces.wg0.configFile = "/etc/nixos/wireguard/us-pho-us-az1.conf";
