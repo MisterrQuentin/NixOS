@@ -25,13 +25,14 @@ in {
       withPython3 = true;
       extraPackages = with pkgs; [
         # LSP
-        nixd 
+        nixd
         bash-language-server
         shellcheck
-        lua-language-server 
+        lua-language-server
         gopls
         pyright
         yaml-language-server
+        emmet-ls # Add this line
         marksman
         alejandra
         stylua
@@ -56,7 +57,7 @@ in {
 
         # File management
         nvim-tree-lua
-        
+
         # LSP & Completion
         nvim-lspconfig
         nvim-cmp
@@ -64,8 +65,8 @@ in {
         cmp-buffer
         cmp-path
         cmp_luasnip
-        
-        # Snippets  
+
+        # Snippets
         luasnip
         friendly-snippets
 
@@ -91,9 +92,9 @@ in {
         telescope-fzf-native-nvim
 
         # Navigation
-        vim-tmux-navigator 
+        vim-tmux-navigator
         vim-maximizer
-        
+
         # Session
         auto-session
 
@@ -102,13 +103,13 @@ in {
         nvim-autopairs
         nvim-surround
         substitute-nvim
-        
+
         # Code Tools
         trouble-nvim
         todo-comments-nvim
         nvim-lint
         conform-nvim
-        
+
         # Misc
         vim-lastplace
         alpha-nvim
@@ -133,8 +134,8 @@ in {
           highlight = {
             enable = true,
           },
-          indent = { 
-            enable = true 
+          indent = {
+            enable = true
           },
           autotag = {
             enable = true,
@@ -149,7 +150,7 @@ in {
             },
           },
         })
-      
+
         require("nvim-treesitter.install").prefer_git = false
 
         local telescope_actions = require('telescope.actions')
@@ -194,7 +195,7 @@ in {
       '';
     };
   };
-  
+
   home.file = {
     ".config/nvim/.backup/.keep".text = "";
     ".config/nvim/.swp/.keep".text = "";

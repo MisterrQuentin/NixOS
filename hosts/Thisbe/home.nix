@@ -47,7 +47,6 @@ in {
     ../../config/swaync.nix
     ../../config/waybar.nix
     ../../config/wlogout.nix
-    ../../config/fastfetch
   ];
 
   # Place Files Inside Home Directory
@@ -727,7 +726,7 @@ in {
     # };
     zsh = {
       enable = true;
-      autosuggestion.enable = true;
+      enableAutosuggestions = true;
       syntaxHighlighting.enable = true;
       enableCompletion = true;
       shellAliases = myAliases;

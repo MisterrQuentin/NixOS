@@ -21,6 +21,7 @@
         fi
       }
 
+      createDirIfNeeded "${config.home.homeDirectory}/Downloads"
       createDirIfNeeded "${config.home.homeDirectory}/Nextcloud-prox"
       createDirIfNeeded "${config.home.homeDirectory}/Nextcloud-private"
       createDirIfNeeded "${config.home.homeDirectory}/Nextcloud-public"

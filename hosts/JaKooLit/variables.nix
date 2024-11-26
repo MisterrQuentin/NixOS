@@ -1,7 +1,7 @@
 {
   # Git Configuration ( For Pulling Software Repos )
-  gitUsername = "JaKooLit";
-  gitEmail = "ejhay.games@gmail.com";
+  gitUsername = "bimmerr2019";
+  gitEmail = "gauss2020@protonmail.com";
 
   # Hyprland Settings
   extraMonitorSettings = "";
@@ -10,7 +10,8 @@
   clock24h = true;
 
   # Program Options
-  browser = "firefox"; # Set Default Browser (google-chrome-stable for google-chrome)
+  browser = "qutebrowser"; # Set Default Browser (google-chrome-stable for google-chrome)
   terminal = "kitty"; # Set Default System Terminal
   keyboardLayout = "us";
 }
+

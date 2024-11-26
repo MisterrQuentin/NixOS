@@ -22,10 +22,11 @@ in {
   imports = [
     ./hardware.nix
     ./users.nix
-    ../../modules_ja/amd-drivers.nix
-    ../../modules_ja/nvidia-drivers.nix
-    ../../modules_ja/nvidia-prime-drivers.nix
-    ../../modules_ja/intel-drivers.nix
+    # ../../modules_ja/amd-drivers.nix
+    # ../../modules_ja/nvidia-drivers.nix
+    # ../../modules_ja/nvidia-prime-drivers.nix
+    # ../../modules_ja/intel-drivers.nix
+    ../../modules/nvidia-drivers.nix
     ../../modules_ja/vm-guest-services.nix
     ../../modules_ja/local-hardware-clock.nix
   ];
@@ -100,6 +101,15 @@ in {
 
     plymouth.enable = true;
   };
+  #Put appImages in the /opt diretory:
+  # Create /opt/appimages directory
+  system.activationScripts = {
+    createAppImageDir = ''
+      mkdir -p /opt/appimages
+      chown root:users /opt/appimages
+      chmod 775 /opt/appimages
+    '';
+  };
 
   # GRUB Bootloader theme. Of course you need to enable GRUB above.. duh!
   #distro-grub-themes = {
@@ -114,14 +124,14 @@ in {
   '';
 
   # Extra Module Options
-  drivers.amdgpu.enable = false;
-  drivers.intel.enable = false;
+  # drivers.amdgpu.enable = false;
+  # drivers.intel.enable = false;
   drivers.nvidia.enable = true;
-  drivers.nvidia-prime = {
-    enable = false;
-    intelBusID = "";
-    nvidiaBusID = "";
-  };
+  # drivers.nvidia-prime = {
+  #   enable = false;
+  #   intelBusID = "";
+  #   nvidiaBusID = "";
+  # };
   vm.guest-services.enable = false;
   local.hardware-clock.enable = false;
 
@@ -148,15 +158,19 @@ in {
     LC_TIME = "en_US.UTF-8";
   };
 
+  nixpkgs.overlays = [
+    (import ../../config/overlays.nix)
+  ];
+
   nixpkgs.config.allowUnfree = true;
 
   programs = {
-    hyprland = {
-      enable = true;
-      package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland; #hyprland-git
-      portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland; # xdphls
-      xwayland.enable = true;
-    };
+    # hyprland = {
+    #   enable = true;
+    #   package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland; #hyprland-git
+    #   portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland; # xdphls
+    #   xwayland.enable = true;
+    # };
 
     waybar.enable = true;
     hyprlock.enable = true;
@@ -174,7 +188,7 @@ in {
       tumbler
     ];
 
-    virt-manager.enable = false;
+    virt-manager.enable = true;
 
     #steam = {
     #  enable = true;
@@ -194,6 +208,7 @@ in {
       enableSSHSupport = true;
     };
   };
+  # environment.shells = with pkgs; [zsh];
 
   users = {
     mutableUsers = true;
@@ -210,7 +225,7 @@ in {
       duf
       eza
       nh
-      yazi
+      fzf
       ffmpeg
       glib #for gsettings to work
       gsettings-qt
@@ -224,8 +239,19 @@ in {
       wget
       xdg-user-dirs
       xdg-utils
+      zsh-completions
+      nix-zsh-completions
+      libvirt
+      virt-viewer
+      virt-manager
 
-      fastfetch
+      calibre
+      signal-desktop
+      freetube
+      newsboat
+      zathura
+
+      # fastfetch
       (mpv.override {scripts = [mpvScripts.mpris];}) # with tray
       #ranger
 
@@ -249,6 +275,7 @@ in {
       imagemagick
       inxi
       jq
+      bat
       kitty
       libsForQt5.qtstyleplugin-kvantum #kvantum
       networkmanagerapplet
@@ -274,6 +301,108 @@ in {
       wlogout
       yad
       yt-dlp
+
+      #phone (flash the phone and get adb so can send files):
+      android-udev-rules
+      android-tools
+
+      # neomutt and related progs:
+      neomutt
+      isync
+      msmtp
+      mypy
+      ruff
+      mutt-wizard
+      pass
+      notmuch
+      imagemagick
+      w3m
+      lynx
+      abook
+
+      # Yubikey
+      gnupg
+      yubikey-personalization
+      yubikey-manager
+      pcsclite
+      pcsctools
+      pam_u2f
+      keepassxc
+
+      ripgrep
+      ripgrep-all
+
+      appimage-run
+      # Optionally, add a convenient way to run AppImages
+      (writeShellScriptBin "run-appimage" ''
+        ${appimage-run}/bin/appimage-run /opt/appimages/$1
+      '')
+      (writeScriptBin "music-layout" ''
+        #!${pkgs.bash}/bin/bash
+
+        # Create new window or use existing one
+        tmux new-window -n music || tmux select-window -t music
+
+        # Split the window vertically into 3 panes
+        tmux split-window -v
+        tmux split-window -h
+
+        # Select and run command in each pane
+        tmux select-pane -t 0
+        tmux send-keys "ncmpcpp -s media_library" C-m
+
+        tmux select-pane -t 1
+        tmux send-keys "ncmpcpp -s playlist_editor" C-m
+
+        tmux select-pane -t 2
+        tmux send-keys "ncmpcpp -s playlist" C-m
+      '')
+      # Add a desktop file for each appimage here:
+      (makeDesktopItem {
+        name = "Nunchuk";
+        desktopName = "Nunchuk";
+        exec = "${pkgs.appimage-run}/bin/appimage-run /opt/appimages/nunchuk-linux-1.9.39.AppImage";
+        icon = ""; # Leave empty if there's no icon
+        comment = "Nunchuk Application";
+        categories = ["Utility"];
+        terminal = false;
+      })
+      (makeDesktopItem {
+        name = "Session";
+        desktopName = "Session";
+        exec = "${pkgs.appimage-run}/bin/appimage-run /opt/appimages/session-desktop-linux-x86_64-1.14.2.AppImage";
+        icon = ""; # Leave empty if there's no icon
+        comment = "Session Application";
+        categories = ["Utility"];
+        terminal = false;
+      })
+      (makeDesktopItem {
+        name = "SimpleX";
+        desktopName = "SimpleX";
+        exec = "${pkgs.appimage-run}/bin/appimage-run /opt/appimages/simplex-desktop-x86_64.AppImage";
+        icon = ""; # Leave empty if there's no icon
+        comment = "SimpleX Application";
+        categories = ["Utility"];
+        terminal = false;
+      })
+      (makeDesktopItem {
+        name = "LMStudio";
+        desktopName = "LM Studio";
+        exec = "${pkgs.appimage-run}/bin/appimage-run /opt/appimages/LM_Studio-0.3.5.AppImage";
+        icon = ""; # Leave empty if there's no icon
+        comment = "LM Studio Application";
+        categories = ["Utility"];
+        terminal = false;
+      })
+      (makeDesktopItem {
+        name = "Logseq";
+        desktopName = "Logseq";
+        exec = "${pkgs.appimage-run}/bin/appimage-run /opt/appimages/Logseq-linux-x64-0.10.9.AppImage";
+        icon = ""; # Leave empty if there's no icon
+        comment = "Logseq Application";
+        categories = ["Utility"];
+        terminal = false;
+      })
 
       #waybar  # if wanted experimental next line
       #(pkgs.waybar.overrideAttrs (oldAttrs: { mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];}))
@@ -314,6 +443,12 @@ in {
         layout = "${keyboardLayout}";
         variant = "";
       };
+    };
+    # Enable ollama
+    ollama = {
+      enable = true;
+      port = 11434;
+      # Add these lines to ensure GPU support
     };
 
     greetd = {
@@ -486,11 +621,11 @@ in {
   };
 
   # Virtualization / Containers
-  virtualisation.libvirtd.enable = false;
+  virtualisation.libvirtd.enable = true;
   virtualisation.podman = {
-    enable = false;
-    dockerCompat = false;
-    defaultNetwork.settings.dns_enabled = false;
+    enable = true;
+    dockerCompat = true;
+    defaultNetwork.settings.dns_enabled = true;
   };
 
   # OpenGL

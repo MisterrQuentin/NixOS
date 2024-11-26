@@ -1,86 +1,41 @@
-# users.nix
 {
   pkgs,
   username,
-  secondUser ? null,  # optional parameter for alice
+  newUsers,
   ...
 }: let
   inherit (import ./variables.nix) gitUsername;
   sharedGroup = "shared";
   sharedMode = "775";
+
+  # Common user configuration
+  makeUserConfig = description: {
+    homeMode = "${sharedMode}";
+    isNormalUser = true;
+    description = description;
+    password = "password";
+    extraGroups = [
+      "networkmanager"
+      "wheel"
+      "libvirtd"
+      "scanner"
+      "lp"
+      "scanner"
+      "lpadmin"
+      sharedGroup
+    ];
+    shell = pkgs.zsh;
+    ignoreShellProgramCheck = true;
+  };
 in {
   users = {
     groups.${sharedGroup} = {};
 
     users = {
-      # bimmer configuration
-      "${username}" = {
-        homeMode = "${sharedMode}";
-        isNormalUser = true;
-        description = "${gitUsername}";
-        extraGroups = [
-          "networkmanager"
-          "wheel"
-          "libvirtd"
-          "scanner"
-          "lp"
-          "video"
-          "input"
-          "audio"
-          sharedGroup
-        ];
-        packages = with pkgs; [];
-      };
-    } // (if secondUser != null then {
-      # alice configuration (only created if secondUser is specified)
-      "${secondUser}" = {
-        homeMode = "${sharedMode}";
-        isNormalUser = true;
-        password = "password";
-        description = "${gitUsername}";
-        extraGroups = [
-          "networkmanager"
-          "wheel"
-          "libvirtd"
-          "scanner"
-          "lp"
-          "video"
-          "input"
-          "audio"
-          sharedGroup
-        ];
-        packages = with pkgs; [];
-      };
-    } else {});
-
-    defaultUserShell = pkgs.zsh;
-  };
-
-  environment.shells = with pkgs; [zsh];
-  environment.systemPackages = with pkgs; [fzf];
-
-  programs = {
-    zsh = {
-      enable = true;
-      enableCompletion = true;
-      ohMyZsh = {
-        enable = true;
-        plugins = ["git"];
-        theme = "xiong-chiamiov-plus";
-      };
-
-      autosuggestions.enable = true;
-      syntaxHighlighting.enable = true;
-
-      promptInit = ''
-        fastfetch -c $HOME/.config/fastfetch/config-compact.jsonc
-        source <(fzf --zsh);
-        HISTFILE=~/.zsh_history;
-        HISTSIZE=10000;
-        SAVEHIST=10000;
-        setopt appendhistory;
-      '';
+      "${username}" = makeUserConfig "${gitUsername}";
+      "${newUsers.user1}" = makeUserConfig "User1";
+      "${newUsers.user2}" = makeUserConfig "User2";
+      "${newUsers.user3}" = makeUserConfig "User3";
     };
   };
 }
-
