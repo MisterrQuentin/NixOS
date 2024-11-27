@@ -174,7 +174,7 @@ in {
 
     waybar.enable = true;
     hyprlock.enable = true;
-    firefox.enable = true;
+    # firefox.enable = true;
     git.enable = true;
     nm-applet.indicator = true;
     #neovim.enable = true;
@@ -244,12 +244,18 @@ in {
       libvirt
       virt-viewer
       virt-manager
+      hplip
 
       calibre
       signal-desktop
       freetube
       newsboat
       zathura
+      ncmpcpp
+      termusic
+      ytermusic
+      wireguard-tools
+      floorp
 
       # fastfetch
       (mpv.override {scripts = [mpvScripts.mpris];}) # with tray
@@ -357,6 +363,85 @@ in {
         tmux select-pane -t 2
         tmux send-keys "ncmpcpp -s playlist" C-m
       '')
+
+      # Wireguard control:
+      (writeScriptBin "wg-toggle" ''
+        #!${stdenv.shell}
+        WG_DIR="/etc/nixos/wireguard"
+
+        # Check if running as root
+        if [ "$(id -u)" -ne 0 ]; then
+          exec sudo "$0" "$@"
+        fi
+
+        # Check if wireguard directory exists
+        if [ ! -d "$WG_DIR" ]; then
+          echo "Error: Wireguard directory ($WG_DIR) does not exist."
+          echo "Please create the directory and add your configuration files."
+          exit 1
+        fi
+
+        # Check if directory is empty (no .conf files)
+        if [ -z "$(find "$WG_DIR" -name "*.conf" 2>/dev/null)" ]; then
+          echo "Error: No Wireguard configuration files found in $WG_DIR"
+          echo "Please add your .conf files to the directory."
+          exit 1
+        fi
+
+        # Function to get current running interface (if any)
+        get_running_interface() {
+          wg show interfaces 2>/dev/null
+        }
+
+        # If WireGuard is running, just turn it off
+        RUNNING_INTERFACE=$(get_running_interface)
+        if [ -n "$RUNNING_INTERFACE" ]; then
+          CONFIG="$WG_DIR/$RUNNING_INTERFACE.conf"
+          wg-quick down "$CONFIG"
+          echo "WireGuard disconnected"
+          exit 0
+        fi
+
+        # If we get here, WireGuard is not running, so show the menu
+        echo "Select WireGuard configuration to activate:"
+
+        # Create array of config files
+        configs=()
+        while IFS= read -r -d $'\0' file; do
+          configs+=("$file")
+        done < <(find "$WG_DIR" -name "*.conf" -print0 | sort -z)
+
+        # Display menu
+        i=1
+        for config in "''${configs[@]}"; do
+          filename=$(basename "$config" .conf)
+          echo "$i) $filename"
+          ((i++))
+        done
+
+        # Get user choice
+        read -p "Enter number (1-$((i-1))): " choice
+
+        # Validate input
+        if ! [[ "$choice" =~ ^[0-9]+$ ]] || [ "$choice" -lt 1 ] || [ "$choice" -gt $((i-1)) ]; then
+          echo "Invalid selection"
+          exit 1
+        fi
+
+        # Convert choice to array index (0-based)
+        ((choice--))
+
+        # Get selected config file
+        selected_config="''${configs[$choice]}"
+
+        # Extract interface name from filename
+        INTERFACE=$(basename "$selected_config" .conf)
+
+        # Activate the selected configuration
+        wg-quick up "$selected_config"
+        echo "WireGuard connected using $INTERFACE"
+      '')
+
       # Add a desktop file for each appimage here:
       (makeDesktopItem {
         name = "Nunchuk";
@@ -437,6 +522,9 @@ in {
 
   # Services to start
   services = {
+    printing.enable = true;
+    printing.drivers = [pkgs.hplip];
+    printing.startWhenNeeded = true; # optional
     xserver = {
       enable = false;
       xkb = {

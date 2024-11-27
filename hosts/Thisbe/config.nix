@@ -285,6 +285,8 @@ in {
     virt-manager
     sshfs
     ncmpcpp
+    termusic
+    ytermusic
     mpc-cli
     lazygit
     swappy
