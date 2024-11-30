@@ -33,16 +33,17 @@ mkdir -p "$WALLPAPER_DIR"
 # Remove all files in wallpaper directory except zaney-wallpaper.jpg
 find "$WALLPAPER_DIR" -type f ! -name 'zaney-wallpaper.jpg' -delete
 
-# Copy the wallpaper with original filename
-cp "$CURRENT_WALLPAPER" "$WALLPAPER_DIR/$FILENAME"
+# Copy the wallpaper with original filename and the name wallpaper.jpg which hyprland will load after a reboot.
+cp "$CURRENT_WALLPAPER" "$WALLPAPER_DIR/$FILENAME"   # used by stylix
+cp "$CURRENT_WALLPAPER" "$WALLPAPER_DIR/wallpaper.jpg"   # used by hyprland
 
-# Update Hyprland
+# Update Wallpaper now.
 swww img "$WALLPAPER_DIR/$FILENAME"
 
-# Generate new hash
+# Generate new hash for stylix
 NEW_HASH=$(nix-prefetch-url "file://$WALLPAPER_DIR/$FILENAME" 2>/dev/null)
 
-# Update the filename and hash in the configuration file
+# Update the filename and hash in the stylix configuration file
 sed -i -E "s|url = \"file://\\\$\{toString ./wallpapers/.*\}\"|url = \"file://\${toString ./wallpapers/$FILENAME}\"|" "/home/bimmer/zaneyos/config/stylix.nix"
 sed -i "s|sha256 = \"sha256:.*\"|sha256 = \"sha256:$NEW_HASH\"|" "/home/bimmer/zaneyos/config/stylix.nix"
 

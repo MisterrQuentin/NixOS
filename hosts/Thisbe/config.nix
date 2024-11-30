@@ -377,6 +377,9 @@ in {
     poppler_utils
     tealdeer
     zenity
+    dropbear
+    exiv2
+    exiftool
 
     # Basic build tools
     gnumake
