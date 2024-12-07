@@ -109,7 +109,7 @@ in {
         ];
         open = [
           {
-            run = "xdg-open \"$@\"";
+            run = "xdg-open \"$@\" &";
             desc = "Open";
             for = "linux";
           }

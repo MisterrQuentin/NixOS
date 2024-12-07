@@ -19,6 +19,7 @@
   # need to let mutt-wizard handle this file
   # mbsyncExtraConfig = builtins.readFile ../../config/mbsync-config.txt;
   pnpm = pkgs.nodePackages.pnpm;
+  pythonConfigs = import ../../config/python.nix {inherit pkgs;};
 in {
   # Home Manager Settings
   home.username = "${username}";
@@ -64,6 +65,35 @@ in {
   in
     scriptEntries
     // {
+      ".local/bin/setup-comfyui" = {
+        executable = true;
+        text = ''
+          #!${pkgs.bash}/bin/bash
+
+          # Set up library paths
+          export LD_LIBRARY_PATH="${pkgs.stdenv.cc.cc.lib}/lib:${pkgs.linuxPackages.nvidia_x11}/lib:$LD_LIBRARY_PATH"
+          export CUDA_PATH="${pkgs.cudaPackages.cuda_cudart}"
+          export NVIDIA_DRIVER_CAPABILITIES="compute,utility"
+
+          if [ ! -d "$HOME/ComfyUI" ]; then
+            ${pkgs.git}/bin/git clone https://github.com/comfyanonymous/ComfyUI.git "$HOME/ComfyUI"
+            cd "$HOME/ComfyUI"
+            ${pythonConfigs.comfyuiPython}/bin/python -m venv .venv --system-site-packages
+            source .venv/bin/activate
+            # Install PyTorch with CUDA support for CUDA 12.6
+            python -m pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu126
+            # Install other dependencies
+            python -m pip install transformers safetensors accelerate einops
+            python -m pip install -r requirements.txt
+            ${pkgs.coreutils}/bin/mkdir -p models/checkpoints models/vae
+          fi
+
+          # Launch ComfyUI
+          cd "$HOME/ComfyUI"
+          source .venv/bin/activate
+          python main.py
+        '';
+      };
       ".ssh/config".source = ../../config/ssh_config;
       ".config/hypr/pyprland.toml".source = ../../config/pyprland.toml;
       ".config/alacritty/alacritty.toml".source = ../../config/alacritty.toml;
@@ -379,6 +409,7 @@ in {
     nsxiv
     nsxiv-fullscreen
     zsh-completions
+    pythonConfigs.comfyuiPython
   ];
 
   services = {

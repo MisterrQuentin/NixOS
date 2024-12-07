@@ -822,6 +822,9 @@ in {
   # networking.wg-quick.interfaces.wg0.configFile = "/etc/nixos/wireguard/tw-tai-tw1.conf";
   # networking.wg-quick.interfaces.wg0.configFile = "/etc/nixos/wireguard/us-pho-us-az1.conf";
 
+  # networking.interfaces.wlo1.macAddress = "04:e8:b9:37:5d:a7"; # normal
+  # networking.interfaces.wlo1.macAddress = "04:e8:b9:37:5d:a8"; # changed
+
   # OpenGL
   hardware.graphics.enable = true;
 

@@ -88,7 +88,8 @@ keymap = [
 	{ on = [ "m", "n" ], run = "linemode none",        desc = "Set linemode to none" },
 
 # Rebuild the flake
-{ on = [ "c", "r" ], run = "shell 'nh os switch --hostname `hostname` --update $HOME/zaneyos' --block --confirm", desc = "Rebuild the flake" },
+{ on = [ "c", "r" ], run = "shell 'nh os switch --hostname `hostname` $HOME/zaneyos' --block --confirm", desc = "Rebuild the system" },
+{ on = [ "c", "u" ], run = "shell 'nh os switch --hostname `hostname` --update $HOME/zaneyos' --block --confirm", desc = "Update the flake & rebuild" },
 
   # Paste 
 { on = [ "c", "p" ], run = """
