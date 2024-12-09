@@ -1,12 +1,5 @@
 {pkgs}: let
-  # For CUDA support
-  cudaEnv = {
-    CUDA_PATH = "${pkgs.cudaPackages.cudatoolkit}";
-    LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath [
-      "${pkgs.cudaPackages.cudatoolkit}/lib"
-      "${pkgs.cudaPackages.cudnn}/lib"
-    ];
-  };
+  cudaPackages = pkgs.cudaPackages_12_4; # Use CUDA 12.4 as recommended
 in {
   basePython = pkgs.python312.withPackages (ps:
     with ps; [
@@ -39,13 +32,11 @@ in {
     with ps; [
       pip
       virtualenv
-      # Basic requirements
       numpy
       pillow
       opencv4
       aiohttp
       tqdm
-      # Add gcc and other system libraries
-      pkgs.stdenv.cc.cc.lib
+      pygobject3
     ]);
 }

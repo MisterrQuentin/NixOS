@@ -70,9 +70,18 @@ in {
         text = ''
           #!${pkgs.bash}/bin/bash
 
-          # Set up library paths
-          export LD_LIBRARY_PATH="${pkgs.stdenv.cc.cc.lib}/lib:${pkgs.linuxPackages.nvidia_x11}/lib:$LD_LIBRARY_PATH"
-          export CUDA_PATH="${pkgs.cudaPackages.cuda_cudart}"
+          export LD_LIBRARY_PATH="${pkgs.lib.makeLibraryPath [
+            pkgs.stdenv.cc.cc.lib
+            pkgs.linuxPackages.nvidia_x11
+            pkgs.glib
+            pkgs.gtk3
+            pkgs.cudaPackages_12_4.cuda_cudart
+            pkgs.libGL
+            pkgs.xorg.libX11
+            pkgs.xorg.libXrender
+            pkgs.xorg.libXext
+          ]}"
+          export CUDA_PATH="${pkgs.cudaPackages_12_4.cuda_cudart}"
           export NVIDIA_DRIVER_CAPABILITIES="compute,utility"
 
           if [ ! -d "$HOME/ComfyUI" ]; then
@@ -80,15 +89,19 @@ in {
             cd "$HOME/ComfyUI"
             ${pythonConfigs.comfyuiPython}/bin/python -m venv .venv --system-site-packages
             source .venv/bin/activate
-            # Install PyTorch with CUDA support for CUDA 12.6
-            python -m pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu126
-            # Install other dependencies
-            python -m pip install transformers safetensors accelerate einops
+            # Install PyTorch with CUDA 12.4
+            python -m pip install torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu124
             python -m pip install -r requirements.txt
-            ${pkgs.coreutils}/bin/mkdir -p models/checkpoints models/vae
+
+            # Create directory structure
+            ${pkgs.coreutils}/bin/mkdir -p models/{checkpoints,vae/mochi,diffusion_models/mochi,clip,t5}
+
+            # Clone custom nodes
+            cd custom_nodes
+            ${pkgs.git}/bin/git clone https://github.com/ltdrdata/ComfyUI-Manager
+            ${pkgs.git}/bin/git clone https://github.com/kijai/ComfyUI-MochiWrapper
           fi
 
-          # Launch ComfyUI
           cd "$HOME/ComfyUI"
           source .venv/bin/activate
           python main.py

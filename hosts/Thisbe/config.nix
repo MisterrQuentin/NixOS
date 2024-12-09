@@ -221,6 +221,8 @@ in {
   ];
 
   nixpkgs.config.allowUnfree = true;
+  # Enable CUDA support
+  nixpkgs.config.cudaSupport = true;
 
   users = {
     mutableUsers = true;
