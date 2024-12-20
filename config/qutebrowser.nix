@@ -1,6 +1,9 @@
-{ username, pkgs, lib, ... }:
-
 {
+  username,
+  pkgs,
+  lib,
+  ...
+}: {
   # Install qutebrowser
   home.packages = with pkgs; [
     qutebrowser
@@ -9,8 +12,8 @@
   # Configure qutebrowser
   programs.qutebrowser = {
     enable = true;
-    package = pkgs.qutebrowser;  # Explicitly specify the package
-    
+    package = pkgs.qutebrowser; # Explicitly specify the package
+
     settings = {
       colors.webpage = {
         darkmode.enabled = true;
@@ -49,12 +52,12 @@
       };
       url = {
         default_page = "about:blank";
-        start_pages = [ "https://www.zerohedge.com/" ];
+        start_pages = ["https://app.daily.dev/"];
       };
       window.transparent = true;
       zoom.default = "180%";
     };
-    
+
     searchEngines = {
       DEFAULT = "https://lili2023.dedyn.io/?q={}";
       a = "https://www.amazon.com/s?k={}";
@@ -111,10 +114,10 @@
         "<Alt-j>" = "tab-prev";
       };
     };
-    
+
     extraConfig = ''
-  # Other extra configurations...
-  config.unbind("m")
+      # Other extra configurations...
+      config.unbind("m")
     '';
   };
 

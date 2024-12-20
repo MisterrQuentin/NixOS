@@ -153,18 +153,6 @@ in {
 
         require("nvim-treesitter.install").prefer_git = false
 
-        local telescope_actions = require('telescope.actions')
-        require('telescope').setup{
-          defaults = {
-            mappings = {
-              i = {
-                ["<C-j>"] = telescope_actions.move_selection_next,
-                ["<C-k>"] = telescope_actions.move_selection_previous,
-              },
-            },
-          }
-        }
-
         ${builtins.readFile ./nvim_josean/lua/josean/core/options.lua}
         ${builtins.readFile ./nvim_josean/lua/josean/core/keymaps.lua}
         ${builtins.readFile ./nvim_josean/lua/josean/plugins/alpha.lua}

@@ -1,10 +1,9 @@
-{ pkgs, ... }:
-{
+{pkgs, ...}: {
   stylix = {
     enable = true;
     image = builtins.fetchurl {
-      url = "file://${toString ./wallpapers/0201.jpg}";
-      sha256 = "sha256:0f0n8zrws0inmv2fxll9f8wyn7ff08knyjaqpfamrbzwyivsnd6j";
+      url = "file://${toString ./wallpapers/0298.jpg}";
+      sha256 = "sha256:1aq02549bqbj9jw1wsvp8yhsasbap996klghn13k3dvnwhm207z2";
     };
     polarity = "dark";
     opacity.terminal = 0.8;
@@ -13,7 +12,7 @@
     cursor.size = 48;
     fonts = {
       monospace = {
-        package = pkgs.nerdfonts.override { fonts = [ "JetBrainsMono" ]; };
+        package = pkgs.nerd-fonts.jetbrains-mono; # Changed this line
         name = "JetBrainsMono Nerd Font Mono";
       };
       sansSerif = {
@@ -26,11 +25,10 @@
       };
       sizes = {
         applications = 12;
-        terminal = 15;
+        terminal = 18;
         desktop = 11;
         popups = 12;
       };
     };
   };
 }
-

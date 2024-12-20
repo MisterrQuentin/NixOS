@@ -47,3 +47,6 @@ opt.undofile = true
 opt.undodir = { prefix .. "/nvim/.undo//" }
 opt.undolevels = 10000
 opt.undoreload = 10000
+
+-- make it scroll before the cursor gets to the bottom or top:
+opt.scrolloff = 8

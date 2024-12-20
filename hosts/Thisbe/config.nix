@@ -201,12 +201,12 @@ in {
     fuse.userAllowOther = true;
     mtr.enable = true;
     virt-manager.enable = true;
-    # steam = {
-    #   enable = true;
-    #   gamescopeSession.enable = true;
-    #   remotePlay.openFirewall = true;
-    #   dedicatedServer.openFirewall = true;
-    # };
+    steam = {
+      enable = true;
+      gamescopeSession.enable = true;
+      #   remotePlay.openFirewall = true;
+      #   dedicatedServer.openFirewall = true;
+    };
     # thunar = {
     #   enable = true;
     #   plugins = with pkgs.xfce; [
@@ -389,6 +389,16 @@ in {
     binutils
     qrencode
     freetube
+    stellarium
+    code-cursor
+
+    # Quentin installs
+    obsidian
+    mangohud
+    protonup
+    steam
+    wlr-randr
+    stremio
 
     # Additional common build tools
     pkg-config
@@ -518,7 +528,7 @@ in {
     (makeDesktopItem {
       name = "Session";
       desktopName = "Session";
-      exec = "${pkgs.appimage-run}/bin/appimage-run /opt/appimages/session-desktop-linux-x86_64-1.14.2.AppImage";
+      exec = "${pkgs.appimage-run}/bin/appimage-run /opt/appimages/session-desktop-linux-x86_64-1.14.3.AppImage";
       icon = ""; # Leave empty if there's no icon
       comment = "Session Application";
       categories = ["Utility"];
@@ -555,6 +565,7 @@ in {
 
   environment.sessionVariables = {
     PYTHONPATH = "${myPython}/${myPython.sitePackages}";
+    STEAM_EXTRA_COMPAT_TOOLS_PATHS = "\${HOME}/.steam/root/compatibilitytools.d";
   };
 
   #touch yubikey for sudo
