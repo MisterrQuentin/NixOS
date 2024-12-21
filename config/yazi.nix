@@ -4,18 +4,18 @@
   pkgs,
   ...
 }: let
-  yaziGlow = pkgs.fetchFromGitHub {
-    owner = "Reledia";
-    repo = "glow.yazi";
-    rev = "master"; # You might want to pin this to a specific commit or tag for stability
-    sha256 = "sha256-bqaFqjlQ/VgMdt2VVjEI8cIkA9THjOZDgNspNicxlbc="; # Replace this with the actual hash
-  };
-  yaziHexyl = pkgs.fetchFromGitHub {
-    owner = "Reledia";
-    repo = "hexyl.yazi";
-    rev = "master"; # You might want to pin this to a specific commit or tag for stability
-    sha256 = "sha256-9rPJcgMYtSY5lYnFQp3bAhaOBdNUkBaN1uMrjen6Z8g="; # Replace this with the actual hash
-  };
+  # yaziGlow = pkgs.fetchFromGitHub {
+  #   owner = "Reledia";
+  #   repo = "glow.yazi";
+  #   rev = "master"; # You might want to pin this to a specific commit or tag for stability
+  #   sha256 = "sha256-bqaFqjlQ/VgMdt2VVjEI8cIkA9THjOZDgNspNicxlbc="; # Replace this with the actual hash
+  # };
+  # yaziHexyl = pkgs.fetchFromGitHub {
+  #   owner = "Reledia";
+  #   repo = "hexyl.yazi";
+  #   rev = "master"; # You might want to pin this to a specific commit or tag for stability
+  #   sha256 = "sha256-9rPJcgMYtSY5lYnFQp3bAhaOBdNUkBaN1uMrjen6Z8g="; # Replace this with the actual hash
+  # };
   yaziMiller = pkgs.fetchFromGitHub {
     owner = "Reledia";
     repo = "miller.yazi";
@@ -56,8 +56,8 @@ in {
     enableBashIntegration = true;
     enableZshIntegration = true;
     plugins = {
-      glow = yaziGlow;
-      hexyl = yaziHexyl;
+      # glow = yaziGlow;
+      # hexyl = yaziHexyl;
       miller = yaziMiller;
       "smart-enter" = smartEnterPlugin;
     };
