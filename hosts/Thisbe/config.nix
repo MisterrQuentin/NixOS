@@ -528,7 +528,7 @@ in {
     (makeDesktopItem {
       name = "Session";
       desktopName = "Session";
-      exec = "${pkgs.appimage-run}/bin/appimage-run /opt/appimages/session-desktop-linux-x86_64-1.14.3.AppImage";
+      exec = "${pkgs.appimage-run}/bin/appimage-run /opt/appimages/session-desktop-linux-x86_64-1.14.5.AppImage";
       icon = ""; # Leave empty if there's no icon
       comment = "Session Application";
       categories = ["Utility"];

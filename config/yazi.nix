@@ -26,6 +26,7 @@
     name = "smart-enter.yazi";
     destination = "/init.lua";
     text = ''
+      --- @sync entry
       return {
         entry = function()
           local h = cx.active.current.hovered
