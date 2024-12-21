@@ -51,11 +51,11 @@ keymap = [
 	{ on = [ "G" ],      run = "arrow 99999999",  desc = "Move cursor to the bottom" },
 
 	# Selection
-	{ on = [ "<Space>" ], run = [ "select --state=none", "arrow 1" ], desc = "Toggle the current selection state" },
+	{ on = [ "<Space>" ], run = [ "toggle --state=none", "arrow 1" ], desc = "Toggle the current selection state" },
 	{ on = [ "v" ],       run = "visual_mode",                        desc = "Enter visual mode (selection mode)" },
 	{ on = [ "V" ],       run = "visual_mode --unset",                desc = "Enter visual mode (unset mode)" },
-	{ on = [ "<C-a>" ],   run = "select_all --state=true",            desc = "Select all files" },
-	{ on = [ "<C-r>" ],   run = "select_all --state=none",            desc = "Inverse selection of all files" },
+	{ on = [ "<C-a>" ],   run = "toggle_all --state=true",            desc = "Select all files" },
+	{ on = [ "<C-r>" ],   run = "toggle_all --state=none",            desc = "Inverse selection of all files" },
 
 	# Operation
 	{ on = [ "o" ],         run = "open",                                                 desc = "Open the selected files" },
@@ -74,7 +74,7 @@ keymap = [
 	{ on = [ "a" ],         run = "create",                                               desc = "Create a file or directory (ends with / for directories)" },
 	{ on = [ "r" ],         run = "rename --cursor=before_ext",                           desc = "Rename a file or directory" },
 	{ on = [ ";" ],         run = "shell --interactive",                                  desc = "Run a shell command" },
-	{ on = [ ":" ],         run = "shell --confirm --block",                              desc = "Run a shell command (block the UI until the command finishes)" },
+	{ on = [ ":" ],         run = "shell --block",                                        desc = "Run a shell command (block the UI until the command finishes)" },
 	{ on = [ "." ],         run = "hidden toggle",                                        desc = "Toggle the visibility of hidden files" },
 	{ on = [ "s" ],         run = "search fd",                                            desc = "Search files by name using fd" },
 	{ on = [ "S" ],         run = "search rg",                                            desc = "Search files by content using ripgrep" },
@@ -88,12 +88,12 @@ keymap = [
 	{ on = [ "m", "n" ], run = "linemode none",        desc = "Set linemode to none" },
 
 # Rebuild the flake
-{ on = [ "c", "r" ], run = "shell 'nh os switch --hostname `hostname` $HOME/zaneyos' --block --confirm", desc = "Rebuild the system" },
-{ on = [ "c", "u" ], run = "shell 'nh os switch --hostname `hostname` --update $HOME/zaneyos' --block --confirm", desc = "Update the flake & rebuild" },
+{ on = [ "c", "r" ], run = "shell 'nh os switch --hostname `hostname` $HOME/zaneyos' --block", desc = "Rebuild the system" },
+{ on = [ "c", "u" ], run = "shell 'nh os switch --hostname `hostname` --update $HOME/zaneyos' --block", desc = "Update the flake & rebuild" },
 
   # Paste 
 { on = [ "c", "p" ], run = """
-    shell 'wl-paste > "$@"' --block --confirm
+    shell 'wl-paste > "$@"' --block
 """, desc = "Paste clipboard contents to file" },
 
 	# Copy
@@ -102,10 +102,10 @@ keymap = [
 	{ on = [ "c", "f" ], run = "copy filename",         desc = "Copy the name of the file" },
 	{ on = [ "c", "n" ], run = "copy name_without_ext", desc = "Copy the name of the file without the extension" },
 { on = [ "c", "z" ], run = """
-    shell 'printf "Your Name:"; read name; zip "$name.zip" "$@"' --block --confirm
+    shell 'printf "Your Name:"; read name; zip "$name.zip" "$@"' --block
 """ },
 { on = [ "c", "i" ], run = """
-    shell '\\cat "$@" | wl-copy' --block --confirm
+    shell '\\cat "$@" | wl-copy' --block
 """, desc = "Copy file contents to clipboard" },
 
 	# Filter
@@ -118,10 +118,10 @@ keymap = [
 	{ on = [ "N" ], run = "find_arrow --previous",   desc = "Go to previous found file" },
 
 	# Sorting
-	{ on = [ ",", "m" ], run = "sort modified --dir-first",               desc = "Sort by modified time" },
-	{ on = [ ",", "M" ], run = "sort modified --reverse --dir-first",     desc = "Sort by modified time (reverse)" },
-	{ on = [ ",", "c" ], run = "sort created --dir-first",                desc = "Sort by created time" },
-	{ on = [ ",", "C" ], run = "sort created --reverse --dir-first",      desc = "Sort by created time (reverse)" },
+	{ on = [ ",", "m" ], run = "sort mtime --dir-first",               desc = "Sort by modified time" },
+	{ on = [ ",", "M" ], run = "sort mtime --reverse --dir-first",     desc = "Sort by modified time (reverse)" },
+	{ on = [ ",", "c" ], run = "sort btime --dir-first",                desc = "Sort by created time" },
+	{ on = [ ",", "C" ], run = "sort btime --reverse --dir-first",      desc = "Sort by created time (reverse)" },
 	{ on = [ ",", "e" ], run = "sort extension --dir-first",         	   desc = "Sort by extension" },
 	{ on = [ ",", "E" ], run = "sort extension --reverse --dir-first",    desc = "Sort by extension (reverse)" },
 	{ on = [ ",", "a" ], run = "sort alphabetical --dir-first",           desc = "Sort alphabetically" },
@@ -176,8 +176,8 @@ keymap = [
 	{ on = [ "g", "n", "u" ],       run = "cd ~/Nextcloud-public",   desc = "Go to the public directory" },
 	{ on = [ "g", "n", "h" ],       run = "cd ~/Nextcloud-public/bimmer_docs/computer_help", desc = "Go to the computer help directory" },
 	{ on = [ "g", "n", "p" ],       run = "cd ~/Nextcloud-private",  desc = "Go to the private directory" },
-	{ on = [ "W" ], run = "shell --confirm 'swww img $1 --transition-type center'", desc = "change wallpaper" },
-  { on = [ "=" ], run = """ shell 'printf "Mode Bits: "; read ans; chmod $ans "$@"' --block --confirm """, desc = "chmod" },
+	{ on = [ "W" ], run = "shell 'swww img $1 --transition-type center'", desc = "change wallpaper" },
+  { on = [ "=" ], run = """ shell 'printf "Mode Bits: "; read ans; chmod $ans "$@"' --block """, desc = "chmod" },
 	# Help
 	{ on = [ "~" ], run = "help", desc = "Open help" },
 ]
@@ -201,7 +201,7 @@ keymap = [
 	{ on = [ "~" ], run = "help", desc = "Open help" }
 ]
 
-[select]
+[pick]
 
 keymap = [
 	{ on = [ "<C-q>" ],   run = "close",          desc = "Cancel selection" },
@@ -335,7 +335,7 @@ desc = "Cancel input"
 
 [[manager.prepend_keymap]]
 on   = "<C-s>"
-run  = 'shell "$SHELL" --block --confirm'
+run  = 'shell "$SHELL" --block'
 desc = "Open shell here"
 
 [[manager.prepend_keymap]]
@@ -346,5 +346,5 @@ desc = "Enter the child directory, or open the file"
 [[manager.prepend_keymap]]
 on  = "y"
 run = [ '''
-	shell 'for path in "$@"; do echo "file://$path"; done | wl-copy -t text/uri-list' --confirm
+	shell 'for path in "$@"; do echo "file://$path"; done | wl-copy -t text/uri-list'
 ''', "yank" ]
