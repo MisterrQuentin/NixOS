@@ -54,7 +54,7 @@ keymap = [
 	{ on = [ "<Space>" ], run = [ "toggle --state=none", "arrow 1" ], desc = "Toggle the current selection state" },
 	{ on = [ "v" ],       run = "visual_mode",                        desc = "Enter visual mode (selection mode)" },
 	{ on = [ "V" ],       run = "visual_mode --unset",                desc = "Enter visual mode (unset mode)" },
-	{ on = [ "<C-a>" ],   run = "toggle_all --state=true",            desc = "Select all files" },
+	{ on = [ "<S-a>" ],   run = "toggle_all --state=true",            desc = "Select all files" },
 	{ on = [ "<C-r>" ],   run = "toggle_all --state=none",            desc = "Inverse selection of all files" },
 
 	# Operation
@@ -82,31 +82,29 @@ keymap = [
 	{ on = [ "Z" ],         run = "plugin fzf",                                             desc = "Jump to a directory, or reveal a file using fzf" },
 
 	# Linemode
-	{ on = [ "m", "s" ], run = "linemode size",        desc = "Set linemode to size" },
-	{ on = [ "m", "p" ], run = "linemode permissions", desc = "Set linemode to permissions" },
-	{ on = [ "m", "m" ], run = "linemode mtime",       desc = "Set linemode to mtime" },
-	{ on = [ "m", "n" ], run = "linemode none",        desc = "Set linemode to none" },
+	{ on = [ "m", "s" ], run = "linemode size",        desc = "Linemode: size" },
+	{ on = [ "m", "p" ], run = "linemode permissions", desc = "Linemode: permissions" },
+	{ on = [ "m", "b" ], run = "linemode btime",       desc = "Linemode: btime" },
+	{ on = [ "m", "m" ], run = "linemode mtime",       desc = "Linemode: mtime" },
+	{ on = [ "m", "o" ], run = "linemode owner",       desc = "Linemode: owner" },
+	{ on = [ "m", "n" ], run = "linemode none",        desc = "Linemode: none" },
 
-# Rebuild the flake
+# Rebuild the system
 { on = [ "c", "r" ], run = "shell 'nh os switch --hostname `hostname` $HOME/zaneyos' --block", desc = "Rebuild the system" },
+# Update the flake and then rebuild
 { on = [ "c", "u" ], run = "shell 'nh os switch --hostname `hostname` --update $HOME/zaneyos' --block", desc = "Update the flake & rebuild" },
-
-  # Paste 
-{ on = [ "c", "p" ], run = """
-    shell 'wl-paste > "$@"' --block
-""", desc = "Paste clipboard contents to file" },
+# copy the contents of the file
+{ on = [ "c", "i" ], run = "shell '\\cat \"$@\" | wl-copy' --block", desc = "Copy file contents to clipboard" },
+# paste into the file and destroy what was there.
+{ on = [ "c", "p" ], run = "shell 'wl-paste > \"$@\"' --block", desc = "Paste clipboard contents to file" },
+# zip the file
+{ on = [ "c", "z" ], run = "shell 'printf \"Your Name:\"; read name; zip \"$name.zip\" \"$@\"' --block", desc = "Zip the file" },
 
 	# Copy
 	{ on = [ "c", "c" ], run = "copy path",             desc = "Copy the absolute path" },
 	{ on = [ "c", "d" ], run = "copy dirname",          desc = "Copy the path of the parent directory" },
 	{ on = [ "c", "f" ], run = "copy filename",         desc = "Copy the name of the file" },
 	{ on = [ "c", "n" ], run = "copy name_without_ext", desc = "Copy the name of the file without the extension" },
-{ on = [ "c", "z" ], run = """
-    shell 'printf "Your Name:"; read name; zip "$name.zip" "$@"' --block
-""" },
-{ on = [ "c", "i" ], run = """
-    shell '\\cat "$@" | wl-copy' --block
-""", desc = "Copy file contents to clipboard" },
 
 	# Filter
 	{ on = [ "f" ], run = "filter --smart", desc = "Filter the files" },
@@ -118,18 +116,18 @@ keymap = [
 	{ on = [ "N" ], run = "find_arrow --previous",   desc = "Go to previous found file" },
 
 	# Sorting
-	{ on = [ ",", "m" ], run = "sort mtime --dir-first",               desc = "Sort by modified time" },
-	{ on = [ ",", "M" ], run = "sort mtime --reverse --dir-first",     desc = "Sort by modified time (reverse)" },
-	{ on = [ ",", "c" ], run = "sort btime --dir-first",                desc = "Sort by created time" },
-	{ on = [ ",", "C" ], run = "sort btime --reverse --dir-first",      desc = "Sort by created time (reverse)" },
-	{ on = [ ",", "e" ], run = "sort extension --dir-first",         	   desc = "Sort by extension" },
-	{ on = [ ",", "E" ], run = "sort extension --reverse --dir-first",    desc = "Sort by extension (reverse)" },
-	{ on = [ ",", "a" ], run = "sort alphabetical --dir-first",           desc = "Sort alphabetically" },
-	{ on = [ ",", "A" ], run = "sort alphabetical --reverse --dir-first", desc = "Sort alphabetically (reverse)" },
-	{ on = [ ",", "n" ], run = "sort natural --dir-first",                desc = "Sort naturally" },
-	{ on = [ ",", "N" ], run = "sort natural --reverse --dir-first",      desc = "Sort naturally (reverse)" },
-	{ on = [ ",", "s" ], run = "sort size --dir-first",                   desc = "Sort by size" },
-	{ on = [ ",", "S" ], run = "sort size --reverse --dir-first",         desc = "Sort by size (reverse)" },
+	{ on = [ ",", "m" ], run = "sort mtime --reverse=no",               desc = "Sort by modified time" },
+	{ on = [ ",", "M" ], run = "sort mtime --reverse",     desc = "Sort by modified time (reverse)" },
+	{ on = [ ",", "c" ], run = "sort btime --reverse=no",                desc = "Sort by created time" },
+	{ on = [ ",", "C" ], run = "sort btime --reverse",      desc = "Sort by created time (reverse)" },
+	{ on = [ ",", "e" ], run = "sort extension --reverse=no",         	   desc = "Sort by extension" },
+	{ on = [ ",", "E" ], run = "sort extension --reverse ",    desc = "Sort by extension (reverse)" },
+	{ on = [ ",", "a" ], run = "sort alphabetical --reverse=no",           desc = "Sort alphabetically" },
+	{ on = [ ",", "A" ], run = "sort alphabetical --reverse ", desc = "Sort alphabetically (reverse)" },
+	{ on = [ ",", "n" ], run = "sort natural --reverse=no",                desc = "Sort naturally" },
+	{ on = [ ",", "N" ], run = "sort natural --reverse ",      desc = "Sort naturally (reverse)" },
+	{ on = [ ",", "s" ], run = "sort size --reverse=no",                   desc = "Sort by size" },
+	{ on = [ ",", "S" ], run = "sort size --reverse ",         desc = "Sort by size (reverse)" },
 
 	# Tabs
 	{ on = [ "t" ], run = "tab_create --current", desc = "Create a new tab using the current path" },
