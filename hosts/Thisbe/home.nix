@@ -84,14 +84,22 @@ in {
           export CUDA_PATH="${pkgs.cudaPackages_12_4.cuda_cudart}"
           export NVIDIA_DRIVER_CAPABILITIES="compute,utility"
 
+          setup_environment() {
+            echo "Setting up virtual environment..."
+            rm -rf .venv
+            ${pythonConfigs.comfyuiPython}/bin/python -m venv .venv
+            source .venv/bin/activate
+            pip install --upgrade pip
+            pip install --no-cache-dir torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu124
+            pip install --no-cache-dir -r requirements.txt
+            pip install --no-cache-dir pyyaml GitPython opencv-python imageio-ffmpeg
+          }
+
           if [ ! -d "$HOME/ComfyUI" ]; then
+            echo "Cloning ComfyUI repository..."
             ${pkgs.git}/bin/git clone https://github.com/comfyanonymous/ComfyUI.git "$HOME/ComfyUI"
             cd "$HOME/ComfyUI"
-            ${pythonConfigs.comfyuiPython}/bin/python -m venv .venv --system-site-packages
-            source .venv/bin/activate
-            # Install PyTorch with CUDA 12.4
-            python -m pip install torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu124
-            python -m pip install -r requirements.txt
+            setup_environment
 
             # Create directory structure
             ${pkgs.coreutils}/bin/mkdir -p models/{checkpoints,vae/mochi,diffusion_models/mochi,clip,t5}
@@ -100,9 +108,16 @@ in {
             cd custom_nodes
             ${pkgs.git}/bin/git clone https://github.com/ltdrdata/ComfyUI-Manager
             ${pkgs.git}/bin/git clone https://github.com/kijai/ComfyUI-MochiWrapper
+            cd ..
+          else
+            cd "$HOME/ComfyUI"
           fi
 
-          cd "$HOME/ComfyUI"
+          # Check if .venv exists and has the required packages
+          if [ ! -d ".venv" ] || [ "$1" = "--force-setup" ]; then
+            setup_environment
+          fi
+
           source .venv/bin/activate
           python main.py
         '';

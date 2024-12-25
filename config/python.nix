@@ -35,8 +35,11 @@ in {
       numpy
       pillow
       opencv4
+      pkgs.ffmpeg
       aiohttp
       tqdm
       pygobject3
+      pyyaml
+      gitpython
     ]);
 }
