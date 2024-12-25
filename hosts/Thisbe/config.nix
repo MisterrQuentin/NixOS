@@ -391,15 +391,16 @@ in {
     freetube
     stellarium
     code-cursor
+    hugo
     # hyprland-qtutils
 
     # Quentin installs
-    obsidian
-    mangohud
-    protonup
-    steam
-    wlr-randr
-    stremio
+    # obsidian
+    # mangohud
+    # protonup
+    # steam
+    # wlr-randr
+    # stremio
 
     # Additional common build tools
     pkg-config
