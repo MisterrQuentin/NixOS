@@ -391,6 +391,7 @@ in {
     freetube
     stellarium
     code-cursor
+    # hyprland-qtutils
 
     # Quentin installs
     obsidian

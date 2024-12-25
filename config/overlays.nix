@@ -6,6 +6,8 @@ final: prev: {
     installCheckPhase = "true";
   });
 
+  # hyprland-qtutils = prev.callPackage ./hyprland-qtutils.nix {};
+
   signal-desktop = prev.stdenv.mkDerivation rec {
     pname = "signal-desktop";
     version = "7.32.0";
@@ -79,10 +81,10 @@ final: prev: {
 
       mkdir -p $out/lib
       cp -R opt/Signal $out/lib/Signal
-      
+
       mkdir -p $out/bin
       makeWrapper $out/lib/Signal/signal-desktop $out/bin/signal-desktop \
-        --prefix PATH : ${prev.lib.makeBinPath [ prev.xdg-utils ]} \
+        --prefix PATH : ${prev.lib.makeBinPath [prev.xdg-utils]} \
         --prefix LD_LIBRARY_PATH : ${prev.lib.makeLibraryPath buildInputs} \
         --set NIXOS_OZONE_WL 1
 
@@ -101,8 +103,8 @@ final: prev: {
       description = "Private messaging from your desktop";
       homepage = "https://signal.org/";
       license = licenses.gpl3Only;
-      maintainers = with maintainers; [ ];
-      platforms = [ "x86_64-linux" ];
+      maintainers = with maintainers; [];
+      platforms = ["x86_64-linux"];
     };
   };
 }

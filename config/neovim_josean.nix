@@ -45,6 +45,9 @@ in {
         black
         isort
         pylint
+        # JavaScript/TypeScript tools
+        nodePackages.eslint_d
+        nodePackages.eslint
       ];
 
       plugins = with pkgs.vimPlugins; [
