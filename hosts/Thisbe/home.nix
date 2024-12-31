@@ -277,6 +277,21 @@ in {
   };
 
   xdg.configFile = {
+    "nixpkgs/make-shell.nix".text = ''
+      { pkgs ? import <nixpkgs> {} }: packages:
+      pkgs.mkShell {
+        buildInputs = with pkgs;
+          [
+            zsh
+            neovim
+          ]
+          ++ packages;
+
+          shellHook = builtins.readFile "/home/${username}/zaneyos/config/shell-script.sh";
+
+        EDITOR = "nvim";
+      }
+    '';
     "mpv/mpv.conf" = {
       text = ''
         fs=yes
@@ -605,7 +620,7 @@ in {
       settings = {
         # ncmpcpp_directory = "~/.config/ncmpcpp";
         lyrics_directory = "~/.local/share/lyrics";
-        # mpd_music_dir = "/home/bimmer/Music";
+        # mpd_music_dir = "/home/${username}/Music";
         message_delay_time = "1";
         # visualizer_type = "spectrum";
         song_list_format = "{$4%a - }{%t}|{$8%f$9}$R{$3(%l)$9}";

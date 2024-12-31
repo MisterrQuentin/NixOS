@@ -202,8 +202,8 @@ in {
     mtr.enable = true;
     virt-manager.enable = true;
     steam = {
-      enable = true;
-      gamescopeSession.enable = true;
+      enable = false;
+      gamescopeSession.enable = false;
       #   remotePlay.openFirewall = true;
       #   dedicatedServer.openFirewall = true;
     };
@@ -392,6 +392,10 @@ in {
     stellarium
     code-cursor
     hugo
+    asciiquarium
+    cool-retro-term
+    cmatrix
+    pipes-rs
     # hyprland-qtutils
 
     # Quentin installs
@@ -590,6 +594,10 @@ in {
       font-awesome
       # symbola
       material-icons
+      # japanese fonts for cmatrix
+      unifont
+      noto-fonts-cjk-sans
+      ipafont
     ];
   };
 
