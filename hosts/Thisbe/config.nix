@@ -396,6 +396,7 @@ in {
     cool-retro-term
     cmatrix
     pipes-rs
+    # ghostty
     # hyprland-qtutils
 
     # Quentin installs
