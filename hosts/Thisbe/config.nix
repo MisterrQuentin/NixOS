@@ -201,12 +201,12 @@ in {
     fuse.userAllowOther = true;
     mtr.enable = true;
     virt-manager.enable = true;
-    steam = {
-      enable = false;
-      gamescopeSession.enable = false;
-      #   remotePlay.openFirewall = true;
-      #   dedicatedServer.openFirewall = true;
-    };
+    # steam = {
+    #   enable = false;
+    #   gamescopeSession.enable = false;
+    #     remotePlay.openFirewall = true;
+    #     dedicatedServer.openFirewall = true;
+    # };
     # thunar = {
     #   enable = true;
     #   plugins = with pkgs.xfce; [
@@ -572,7 +572,7 @@ in {
 
   environment.sessionVariables = {
     PYTHONPATH = "${myPython}/${myPython.sitePackages}";
-    STEAM_EXTRA_COMPAT_TOOLS_PATHS = "\${HOME}/.steam/root/compatibilitytools.d";
+    # STEAM_EXTRA_COMPAT_TOOLS_PATHS = "\${HOME}/.steam/root/compatibilitytools.d";
   };
 
   #touch yubikey for sudo
