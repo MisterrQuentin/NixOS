@@ -136,6 +136,12 @@ in {
       ".face.icon".source = ../../config/face.jpg;
       ".config/face.jpg".source = ../../config/face.jpg;
       ".config/zaney-wallpaper.jpg".source = ../../config/zaney-wallpaper.jpg;
+      ".config/lazygit/config.yml".text = ''
+        keybinding:
+          universal:
+            openDiffTool: d
+            remove: D
+      '';
       ".config/swappy/config".text = ''
         [Default]
         save_dir=/home/${username}/Pictures/Screenshots
@@ -199,6 +205,10 @@ in {
   # Install & Configure Git
   programs.git = {
     enable = true;
+    extraConfig = {
+      diff.tool = "nvimdiff";
+      difftool.nvimdiff.cmd = "nvim -d \"$LOCAL\" \"$REMOTE\"";
+    };
     userName = "${gitUsername}";
     userEmail = "${gitEmail}";
   };
