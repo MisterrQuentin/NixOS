@@ -170,6 +170,7 @@ in {
         ${builtins.readFile ./nvim_josean/lua/josean/plugins/gitsigns.lua}
         ${builtins.readFile ./nvim_josean/lua/josean/plugins/linting.lua}
         ${builtins.readFile ./nvim_josean/lua/josean/plugins/lualine.lua}
+        ${builtins.readFile ./nvim_josean/lua/josean/plugins/lazygit.lua}
         ${builtins.readFile ./nvim_josean/lua/josean/plugins/nvim-cmp.lua}
         ${builtins.readFile ./nvim_josean/lua/josean/plugins/nvim-tree.lua}
         ${builtins.readFile ./nvim_josean/lua/josean/plugins/nvim-treesitter-text-objects.lua}
