@@ -7,7 +7,7 @@
   inherit (import ./variables.nix) gitUsername;
   sharedGroup = "shared";
   sharedMode = "775";
-  
+
   # Common user configuration
   makeUserConfig = description: {
     homeMode = "${sharedMode}";
@@ -22,6 +22,7 @@
       "lp"
       "scanner"
       "lpadmin"
+      "docker"
       sharedGroup
     ];
     shell = pkgs.zsh;
@@ -40,4 +41,3 @@ in {
     };
   };
 }
-

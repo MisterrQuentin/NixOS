@@ -396,6 +396,9 @@ in {
     cool-retro-term
     cmatrix
     pipes-rs
+    docker
+    docker-compose
+
     # ghostty
     # hyprland-qtutils
 
@@ -712,47 +715,7 @@ in {
     rpcbind.enable = false;
     nfs.server.enable = false;
   };
-  virtualisation.oci-containers.containers = {
-    open-webui = {
-      image = "ghcr.io/open-webui/open-webui:main";
-      autoStart = false;
-    };
-  };
 
-  systemd.services.pull-open-webui = {
-    description = "Pull Open WebUI Docker image";
-    after = ["network-online.target"];
-    wants = ["network-online.target"];
-    serviceConfig = {
-      Type = "oneshot";
-      ExecStart = ''
-        ${pkgs.bash}/bin/bash -c '\
-          if ! ${pkgs.podman}/bin/podman image exists ghcr.io/open-webui/open-webui:main; then \
-            ${pkgs.podman}/bin/podman pull ghcr.io/open-webui/open-webui:main; \
-          fi'
-      '';
-      RemainAfterExit = true;
-      TimeoutStartSec = "30";
-      StartLimitIntervalSec = "300"; # 5 minutes, changed from StartLimitInterval
-      StartLimitBurst = "3";
-      FailureAction = "none";
-      SuccessAction = "none";
-    };
-  };
-
-  systemd.services.open-webui = {
-    description = "Open WebUI";
-    after = ["network.target" "podman.socket"]; # Remove pull-open-webui.service from after
-    requires = ["podman.socket"]; # Remove pull-open-webui.service from requires
-    wants = ["pull-open-webui.service"]; # Add as a weak dependency instead
-    wantedBy = ["multi-user.target"];
-    # ... rest of the service config
-  };
-
-  # Ensure podman.socket is enabled
-  systemd.sockets.podman = {
-    wantedBy = ["sockets.target"];
-  };
   # systemd.services.flatpak-repo = {
   #   path = [ pkgs.flatpak ];
   #   script = ''
@@ -824,11 +787,30 @@ in {
   };
 
   # Virtualization / Containers
-  virtualisation.libvirtd.enable = true;
-  virtualisation.podman = {
-    enable = true;
-    dockerCompat = true;
-    defaultNetwork.settings.dns_enabled = true;
+  virtualisation = {
+    libvirtd.enable = true;
+    docker = {
+      enable = true;
+      enableOnBoot = true;
+    };
+    oci-containers = {
+      backend = "docker";
+      containers = {
+        open-webui = {
+          image = "ghcr.io/open-webui/open-webui:main";
+          autoStart = true; # This replaces --restart always
+          volumes = [
+            "open-webui:/app/backend/data"
+          ];
+          environment = {
+            OLLAMA_BASE_URL = "http://127.0.0.1:11434"; # Note: not OLLAMA_API_BASE_URL
+          };
+          extraOptions = [
+            "--network=host"
+          ];
+        };
+      };
+    };
   };
 
   # Wireguard: UNCOMMENT to have a wireguard tunnel. put the config files in /etc/nixos/wireguard:
