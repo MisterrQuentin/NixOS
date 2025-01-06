@@ -1,6 +1,8 @@
-{ config, pkgs, ... }:
-
-let
+{
+  config,
+  pkgs,
+  ...
+}: let
   themepack = pkgs.tmuxPlugins.mkTmuxPlugin {
     pluginName = "themepack";
     version = "1.1.0";
@@ -11,8 +13,7 @@ let
       sha256 = "sha256-c5EGBrKcrqHWTKpCEhxYfxPeERFrbTuDfcQhsUAbic4=";
     };
   };
-in
-{
+in {
   programs.tmux = {
     enable = true;
     mouse = true;
@@ -36,10 +37,10 @@ in
         '';
       }
       {
-          plugin = resurrect;
-          extraConfig = ''
-            set -g @resurrect-dir '~/.tmux/resurrect'
-          '';
+        plugin = resurrect;
+        extraConfig = ''
+          set -g @resurrect-dir '~/.tmux/resurrect'
+        '';
       }
     ];
     extraConfig = ''
@@ -92,11 +93,15 @@ in
 
       # Rerun the themepack (again, this should already happen, but there were powerline formatting issues needing a refresh)
       run-shell ${themepack}/share/tmux-plugins/themepack/themepack.tmux
-      
+
       # this code interferes with tmux-vim-navigator for tmux panes up and down, left and right work.
       # for up and down use prefix-arrow key, otherwise telescope wont respond to ctrl-j and k in nvim
       bind-key -n C-j send-keys C-j
       bind-key -n C-k send-keys C-k
+
+      # Turns off terminal bell sound
+      set -g bell-action none
+
     '';
   };
 }
