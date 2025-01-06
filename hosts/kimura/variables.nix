@@ -1,7 +1,7 @@
 {
   # Git Configuration ( For Pulling Software Repos )
-  gitUsername = "bimmerr2019";
-  gitEmail = "gauss2020@protonmail.com";
+  gitUsername = "MisterrQuentin";
+  gitEmail = "Quentin@lonlonmail.com";
 
   # Hyprland Settings
   extraMonitorSettings = "";

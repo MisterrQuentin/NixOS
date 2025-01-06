@@ -23,8 +23,8 @@
     ...
   } @ inputs: let
     system = "x86_64-linux";
-    host = "Thisbe";
-    username = "bimmer";
+    host = "kimura";
+    username = "jedwick";
     newUsers = {
       alice = "alice";
       bob = "bob";

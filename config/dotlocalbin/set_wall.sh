@@ -12,8 +12,8 @@ fi
 export PATH="/run/current-system/sw/bin:$PATH"
 
 # Path to the current wallpaper file
-CURRENT_WALLPAPER_FILE="/home/bimmer/.current_wallpaper"
-WALLPAPER_DIR="/home/bimmer/zaneyos/config/wallpapers"
+CURRENT_WALLPAPER_FILE="/home/jedwick/.current_wallpaper"
+WALLPAPER_DIR="/home/jedwick/zaneyos/config/wallpapers"
 
 # Check if the current wallpaper file exists
 if [ ! -f "$CURRENT_WALLPAPER_FILE" ]; then
@@ -44,9 +44,9 @@ swww img "$WALLPAPER_DIR/$FILENAME"
 NEW_HASH=$(nix-prefetch-url "file://$WALLPAPER_DIR/$FILENAME" 2>/dev/null)
 
 # Update the filename and hash in the stylix configuration file
-sed -i -E "s|url = \"file://\\\$\{toString ./wallpapers/.*\}\"|url = \"file://\${toString ./wallpapers/$FILENAME}\"|" "/home/bimmer/zaneyos/config/stylix.nix"
-sed -i "s|sha256 = \"sha256:.*\"|sha256 = \"sha256:$NEW_HASH\"|" "/home/bimmer/zaneyos/config/stylix.nix"
+sed -i -E "s|url = \"file://\\\$\{toString ./wallpapers/.*\}\"|url = \"file://\${toString ./wallpapers/$FILENAME}\"|" "/home/jedwick/zaneyos/config/stylix.nix"
+sed -i "s|sha256 = \"sha256:.*\"|sha256 = \"sha256:$NEW_HASH\"|" "/home/jedwick/zaneyos/config/stylix.nix"
 
 # Rebuild NixOS configuration
 echo "Files are in place, please rebuild your system with fr command"
-# nh os switch --hostname "$HOST" "/home/bimmer/zaneyos"
+# nh os switch --hostname "$HOST" "/home/jedwick/zaneyos"
