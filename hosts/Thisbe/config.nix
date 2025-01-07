@@ -403,12 +403,12 @@ in {
     # hyprland-qtutils
 
     # Quentin installs
-    # obsidian
+    obsidian
     # mangohud
     # protonup
     # steam
-    # wlr-randr
-    # stremio
+    wlr-randr
+    stremio
 
     # Additional common build tools
     pkg-config
