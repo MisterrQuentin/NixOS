@@ -402,13 +402,26 @@ in {
     # ghostty
     # hyprland-qtutils
 
-    # Quentin installs
+    ### Quentin installs ###
+
+    ## Full apps ##
+    threema-desktop
     # obsidian
-    # mangohud
-    # protonup
     # steam
-    # wlr-randr
     # stremio
+
+    ## Terminal apps ##
+    # wlr-randr
+    # home-manager
+
+    # Packages
+    # mangohud # for steam
+    # protonup # for steam
+    # spice # for django
+    # spice-gtk # for django
+    # spice-protocol # for django
+
+    ### Quentin installs ###
 
     # Additional common build tools
     pkg-config
