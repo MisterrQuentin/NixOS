@@ -3,5 +3,7 @@
 #add, commit and push
 cd $HOME/zaneyos
 git pull
-rm .gitignore
+
+# Remove .gitignore if it exists
+[ -f .gitignore ] && rm .gitignore
 
