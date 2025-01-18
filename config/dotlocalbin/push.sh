@@ -7,6 +7,7 @@ if [ $# -eq 0 ]; then
     exit 1
 fi
 
+cd $HOME/zaneyos
 # Remove .gitignore if it exists
 [ -f .gitignore ] && rm .gitignore
 
@@ -29,7 +30,6 @@ fi
 # public.sh
 
 #add, commit and push
-cd $HOME/zaneyos
 git add *
 mv .gitignore_sav .gitignore
 git commit -m "$1"
