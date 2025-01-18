@@ -7,6 +7,21 @@ if [ $# -eq 0 ]; then
     exit 1
 fi
 
+# Remove .gitignore if it exists
+[ -f .gitignore ] && rm .gitignore
+
+# Create .gitignore_sav if it doesn't exist
+if [ ! -f .gitignore_sav ]; then
+    cat > .gitignore_sav << 'EOF'
+config/myAliases.txt
+config/quickmarks
+config/scripts.sh
+config/ssh_config
+config/urls_newsboat
+flake.nix
+EOF
+fi
+
 # This file got alot simpler with gitignore
 #
 # hide my private info with a public stub
@@ -25,3 +40,4 @@ mv .gitignore .gitignore_sav
 # cd $HOME
 # private.sh
 #phoenix sync user
+
