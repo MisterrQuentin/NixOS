@@ -27,6 +27,8 @@
       createDirIfNeeded "${config.home.homeDirectory}/Nextcloud-public"
       createDirIfNeeded "${config.home.homeDirectory}/Nextcloud-onyx"
       createDirIfNeeded "${config.home.homeDirectory}/Sparrow"
+      createDirIfNeeded "${config.home.homeDirectory}/Media-QNAP"
+      createDirIfNeeded "${config.home.homeDirectory}/Cloud-QNAP"
       createDirIfNeeded "${config.home.homeDirectory}/Cloud"
       createDirIfNeeded "${config.home.homeDirectory}/Eclipse"
       createDirIfNeeded "${config.home.homeDirectory}/Encrypted-Cloud"
