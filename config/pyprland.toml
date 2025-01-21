@@ -37,7 +37,7 @@ size = "75% 60%"
 
 [scratchpads.llm]
 animation = "fromTop"
-command = "kitty --class llm -e ollama run llama3.2"
+command = "kitty --class llm -e ollama run deepseek-r1:8b"
 class = "llm"
 size = "75% 60%"
 
