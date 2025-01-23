@@ -564,7 +564,7 @@ in {
     (makeDesktopItem {
       name = "LMStudio";
       desktopName = "LM Studio";
-      exec = "${pkgs.appimage-run}/bin/appimage-run /opt/appimages/LM_Studio-0.3.8.AppImage";
+      exec = "${pkgs.appimage-run}/bin/appimage-run /opt/appimages/LM-Studio-0.3.8.AppImage";
       icon = ""; # Leave empty if there's no icon
       comment = "LM Studio Application";
       categories = ["Utility"];

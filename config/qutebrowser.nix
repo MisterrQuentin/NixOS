@@ -55,7 +55,7 @@
         start_pages = ["https://app.daily.dev/"];
       };
       window.transparent = true;
-      zoom.default = "180%";
+      zoom.default = "150%";
     };
 
     searchEngines = {
