@@ -397,7 +397,6 @@ in {
     cmatrix
     pipes-rs
     # ghostty
-    # hyprland-qtutils
 
     # Quentin installs
     obsidian

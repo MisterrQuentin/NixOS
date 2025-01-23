@@ -400,7 +400,6 @@ in {
     docker-compose
 
     # ghostty
-    # hyprland-qtutils
 
     ### Quentin installs ###
 

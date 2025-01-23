@@ -6,8 +6,6 @@ final: prev: {
     installCheckPhase = "true";
   });
 
-  # hyprland-qtutils = prev.callPackage ./hyprland-qtutils.nix {};
-
   signal-desktop = prev.stdenv.mkDerivation rec {
     pname = "signal-desktop";
     version = "7.32.0";
