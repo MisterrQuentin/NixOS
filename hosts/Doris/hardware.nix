@@ -101,11 +101,11 @@
     fsType = "ntfs";
     options = ["ro" "nofail"];
   };
-  fileSystems."/mnt/new-volume" = {
-    device = "/dev/disk/by-uuid/14CC3926CC390390";
-    fsType = "ntfs";
-    options = ["rw" "nofail"]; # Use "rw" for write access
-  };
+  # fileSystems."/mnt/new-volume" = {
+  #   device = "/dev/disk/by-uuid/14CC3926CC390390";
+  #   fsType = "ntfs";
+  #   options = ["rw" "nofail"]; # Use "rw" for write access
+  # };
   systemd.services.dmraid = {
     description = "Activate DM RAID arrays";
     wantedBy = ["multi-user.target"];
