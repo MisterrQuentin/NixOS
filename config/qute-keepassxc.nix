@@ -1,13 +1,12 @@
 {
-  config,
   pkgs,
   lib,
   ...
 }: {
   home.activation = {
-    clonePlotBTC = lib.hm.dag.entryAfter ["writeBoundary"] ''
-      REPO_URL="https://github.com/bimmerr2019/plotbtc.git"
-      REPO_DIR="$HOME/plotbtc"
+    cloneQuteKeePassXC = lib.hm.dag.entryAfter ["writeBoundary"] ''
+      REPO_URL="https://github.com/ususdei/qute-keepassxc"
+      REPO_DIR="$HOME/qute-keepassxc"
 
       # Function to check network connectivity
       check_network() {
@@ -41,6 +40,15 @@
           exit 1
         fi
       fi
+
+      # Create userscripts directory if missing
+      mkdir -p "$HOME/.local/share/qutebrowser/userscripts"
+
+      # Symlink the script
+      ln -sfn "$REPO_DIR/qute-keepassxc" "$HOME/.local/share/qutebrowser/userscripts/qute-keepassxc"
+
+      # Ensure script is executable
+      chmod +x "$REPO_DIR/qute-keepassxc"
 
       echo "Repository setup/update completed successfully."
     '';

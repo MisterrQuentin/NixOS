@@ -3,16 +3,31 @@
   pkgs,
   lib,
   ...
-}: {
-  # Install qutebrowser
-  home.packages = with pkgs; [
-    qutebrowser
-  ];
+}: let
+  # Create a custom Python environment with pynacl
+  qbPythonEnv = pkgs.python3.withPackages (ps: [
+    ps.pynacl # Add pynacl to the environment
+  ]);
 
-  # Configure qutebrowser
+  # Create a wrapped qutebrowser that uses our custom Python environment
+  customQutebrowser = pkgs.qutebrowser.overrideAttrs (oldAttrs: {
+    buildInputs = oldAttrs.buildInputs or [] ++ [pkgs.makeWrapper];
+    postInstall =
+      (oldAttrs.postInstall or "")
+      + ''
+        wrapProgram "$out/bin/qutebrowser" \
+          --prefix PATH : "${qbPythonEnv}/bin" \
+          --prefix PYTHONPATH : "${qbPythonEnv}/${qbPythonEnv.sitePackages}"
+      '';
+  });
+in {
+  # Install the custom wrapped qutebrowser
+  home.packages = with pkgs; [customQutebrowser];
+
+  # Configure qutebrowser to use the custom package
   programs.qutebrowser = {
     enable = true;
-    package = pkgs.qutebrowser; # Explicitly specify the package
+    package = customQutebrowser; # Use our wrapped version
 
     settings = {
       colors.webpage = {
@@ -112,6 +127,10 @@
         "J" = "tab-prev";
         "<Alt-k>" = "tab-next";
         "<Alt-j>" = "tab-prev";
+        "pw" = "spawn --userscript qute-keepassxc --key 596B75C9472A5149CAA1312BF183573B709BD2C5";
+      };
+      insert = {
+        "<Alt-Shift-u>" = "spawn --userscript qute-keepassxc --key 596B75C9472A5149CAA1312BF183573B709BD2C5";
       };
     };
 
