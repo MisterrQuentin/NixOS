@@ -323,6 +323,8 @@ in {
     signal-desktop
     # session-desktop-appimage
     # simplex-chat-desktop
+    telegram-desktop
+    inotify-tools
 
     #phone (flash the phone and get adb so can send files):
     android-udev-rules
@@ -563,7 +565,7 @@ in {
     (makeDesktopItem {
       name = "LMStudio";
       desktopName = "LM Studio";
-      exec = "${pkgs.appimage-run}/bin/appimage-run /opt/appimages/LM-Studio-0.3.8.AppImage";
+      exec = "${pkgs.appimage-run}/bin/appimage-run /opt/appimages/LM-Studio-0.3.9.AppImage";
       icon = ""; # Leave empty if there's no icon
       comment = "LM Studio Application";
       categories = ["Utility"];

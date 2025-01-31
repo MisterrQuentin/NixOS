@@ -526,6 +526,29 @@ in {
     MANPAGER = "nvim +Man!";
   };
 
+  systemd.user.startServices = true; # Add this at the same level as systemd.user.services
+  systemd.user.services = {
+    inotify = {
+      Unit = {
+        Description = "Monitor Nextcloud help directory for new files";
+        After = ["network.target"];
+      };
+
+      Service = {
+        ExecStart = "%h/.local/bin/notify_on_file_add.sh";
+        Restart = "always";
+        Environment = [
+          "PATH=${config.home.profileDirectory}/bin:/run/current-system/sw/bin"
+          "DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/%U/bus"
+        ];
+      };
+
+      Install = {
+        WantedBy = ["default.target"];
+      };
+    };
+  };
+
   programs = {
     zathura = {
       enable = true;
