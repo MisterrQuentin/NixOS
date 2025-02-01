@@ -41,6 +41,7 @@ in {
     ../../config/empty-dirs.nix
     ../../config/yazi.nix
     ../../config/plotbtc.nix
+    ../../config/qute-keepassxc.nix
     ../../config/nostrudel.nix
     ../../config/rofi/rofi.nix
     ../../config/rofi/config-emoji.nix
