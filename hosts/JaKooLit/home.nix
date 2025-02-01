@@ -283,7 +283,7 @@ in
         };
         shellAliases = myAliases;
 
-        enableAutosuggestions = true;
+        autosuggestion.enable = true;
         syntaxHighlighting.enable = true;
 
         initExtra = ''

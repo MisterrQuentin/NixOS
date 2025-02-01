@@ -357,7 +357,6 @@ in {
     proxychains
     ecryptfs
     openssl
-    untrunc-anthwlock
     conda
     qbittorrent
     nfs-utils
@@ -752,7 +751,7 @@ in {
   services.blueman.enable = true;
 
   # Enable sound with pipewire.
-  hardware.pulseaudio.enable = false;
+  services.pulseaudio.enable = false;
 
   # Trying this to get sound working:
   hardware.enableAllFirmware = true;

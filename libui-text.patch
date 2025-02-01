@@ -1,0 +1,13 @@
+--- a/unix/text.c
++++ b/unix/text.c
+@@ -12,8 +12,8 @@
+ #include "window.h"
+ #include <stdlib.h>
+ #include <string.h>
+-#include <strings.h>
++#include <glib-2.0/glib.h>
+ 
+ int uiprivStricmp(const char *a, const char *b) {
+-  return strcasecmp(a, b);
++  return g_ascii_strcasecmp(a, b);
+ }

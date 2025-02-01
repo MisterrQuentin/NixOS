@@ -39,6 +39,7 @@
   boot.swraid = {
     enable = true;
     mdadmConf = ''
+      MAILADDR root  # Add this line to specify an email address (e.g., root)
       ARRAY /dev/md/imsm0 metadata=imsm UUID=5729fdba:dedc7475:1183b1d9:ae4e5b13
       ARRAY /dev/md/ARRAY0_0 container=imsm0 member=0
     '';
