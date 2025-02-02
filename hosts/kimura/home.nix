@@ -66,6 +66,15 @@ in {
   in
     scriptEntries
     // {
+      ".config/mutt/mutt-wizard-stable.muttrc" = {
+        source = config.lib.file.mkOutOfStoreSymlink "${pkgs.mutt-wizard}/share/mutt-wizard/mutt-wizard.muttrc";
+      };
+      ".config/mutt/switch-stable.muttrc" = {
+        source = config.lib.file.mkOutOfStoreSymlink "${pkgs.mutt-wizard}/share/mutt-wizard/switch.muttrc";
+      };
+      ".config/mutt/gpg-wks-client-stable" = {
+        source = config.lib.file.mkOutOfStoreSymlink "${pkgs.mutt-wizard}/libexec/gpg-wks-client";
+      };
       ".local/bin/setup-comfyui" = {
         executable = true;
         text = ''
