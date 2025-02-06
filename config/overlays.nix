@@ -8,11 +8,11 @@ final: prev: {
 
   signal-desktop = prev.stdenv.mkDerivation rec {
     pname = "signal-desktop";
-    version = "7.32.0";
+    version = "7.41.0";
 
     src = prev.fetchurl {
       url = "https://updates.signal.org/desktop/apt/pool/s/signal-desktop/signal-desktop_${version}_amd64.deb";
-      sha256 = "1skwlzggm7h6iqahi21v9ip5b0z5f5iq73fmsgsnb52y4zd766vc";
+      sha256 = "sha256-wBbJH7/QP12JLaDw6LuFkfsUCqoDwYYlcEcQ9yGkNqo=";
     };
 
     nativeBuildInputs = with prev; [
