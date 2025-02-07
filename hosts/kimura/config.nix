@@ -325,6 +325,7 @@ in {
     # simplex-chat-desktop
     telegram-desktop
     inotify-tools
+    rustdesk
 
     #phone (flash the phone and get adb so can send files):
     android-udev-rules
