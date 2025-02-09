@@ -2,74 +2,72 @@
 let
   nodejs = pkgs.nodejs_20;
   pnpm = pkgs.nodePackages.pnpm;
+  envPath = lib.makeBinPath [ pkgs.git pkgs.curl nodejs pnpm pkgs.coreutils ];
 in
 {
-  home.packages = with pkgs; [
-    nodejs
-    pnpm
-    go
-  ];
+  home.packages = with pkgs; [ nodejs pnpm go ];
 
-  # Remove the setupOrUpdateNostrudel from home.activation
+  systemd.user.services.setup-nostrudel = {
+    Unit = {
+      Description = "Nostrudel repository management";
+      After = [ "network-online.target" ];
+      Wants = [ "network-online.target" ];
+      ConditionPathExists = "!%h/nostrudel/.setup-complete";
+    };
 
-  home.file.".local/bin/setup-nostrudel" = {
-    text = ''
-      #!/bin/sh
-      set -e
+    Service = {
+      Type = "oneshot";
+      ExecStart = pkgs.writeShellScript "setup-nostrudel-service" ''
+        set -euo pipefail
+        export PATH="${envPath}"
+        export SSL_CERT_FILE="${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt"
 
-      max_attempts=30
-      attempt=0
-      while ! ${pkgs.curl}/bin/curl -s https://github.com > /dev/null; do
-        attempt=$((attempt+1))
-        if [ $attempt -ge $max_attempts ]; then
-          echo "Failed to establish network connection after $max_attempts attempts."
-          exit 1
-        fi
-        echo "Waiting for network connection... (attempt $attempt/$max_attempts)"
-        sleep 5
-      done
+        REPO_DIR="$HOME/nostrudel"
+        REPO_URL="https://github.com/hzrd149/nostrudel.git"
 
-      if [ -d "$HOME/nostrudel" ]; then
-        echo "Updating existing nostrudel installation..."
-        cd "$HOME/nostrudel"
-        ${pkgs.git}/bin/git pull https://github.com/hzrd149/nostrudel.git || {
-          echo "Git pull failed. Removing directory and cloning again."
-          cd ..
-          rm -rf nostrudel
-          ${pkgs.git}/bin/git clone https://github.com/hzrd149/nostrudel.git
+        # Network check with retries
+        check_network() {
+          ${pkgs.curl}/bin/curl -Is https://github.com | ${pkgs.gnugrep}/bin/grep -q "HTTP/.* 200"
         }
-      else
-        echo "Setting up nostrudel for the first time..."
-        ${pkgs.git}/bin/git clone https://github.com/hzrd149/nostrudel.git "$HOME/nostrudel"
-      fi
-      cd "$HOME/nostrudel"
-      
-      export PATH="${nodejs}/bin:${pnpm}/bin:$PATH"
-      export NPM_CONFIG_FETCH_TIMEOUT=300000
 
-      max_retries=3
-      for i in $(seq 1 $max_retries); do
-        if ${pnpm}/bin/pnpm install --frozen-lockfile; then
-          echo "pnpm install successful"
-          break
+        max_attempts=30
+        for attempt in $(seq 1 $max_attempts); do
+          if check_network; then break; fi
+          if [ $attempt -eq $max_attempts ]; then exit 1; fi
+          sleep 5
+        done
+
+        # Repository management
+        if [ -d "$REPO_DIR" ]; then
+          ${pkgs.git}/bin/git -C "$REPO_DIR" pull || {
+            echo "Pull failed - recloning..."
+            rm -rf "$REPO_DIR"
+            ${pkgs.git}/bin/git clone "$REPO_URL" "$REPO_DIR"
+          }
         else
-          if [ $i -eq $max_retries ]; then
-            echo "pnpm install failed after $max_retries attempts"
-            exit 1
-          else
-            echo "pnpm install failed, retrying in 10 seconds..."
-            sleep 10
-          fi
+          ${pkgs.git}/bin/git clone "$REPO_URL" "$REPO_DIR"
         fi
-      done
-    '';
-    executable = true;
+
+        # Dependency installation
+        cd "$REPO_DIR"
+        for retry in $(seq 1 3); do
+          ${pnpm}/bin/pnpm install --frozen-lockfile && break
+          sleep 10
+        done
+
+        touch "$REPO_DIR/.setup-complete"
+      '';
+      Restart = "on-failure";
+      RestartSec = "30s";
+    };
+
+    Install.WantedBy = [ "default.target" ];
   };
 
   home.file.".local/bin/nostr" = {
     text = ''
-      #!/bin/sh
-      cd $HOME/nostrudel && ${pnpm}/bin/pnpm dev
+      #!/usr/bin/env bash
+      cd "$HOME/nostrudel" && ${pnpm}/bin/pnpm dev
     '';
     executable = true;
   };
@@ -78,3 +76,4 @@ in
     fetch-timeout=300000
   '';
 }
+
