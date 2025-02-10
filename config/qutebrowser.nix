@@ -62,15 +62,15 @@ in {
         ];
       };
       fonts = {
-        default_size = lib.mkForce "18pt";
-        hints = "bold 18px default_family";
+        default_size = lib.mkForce "16pt";
+        hints = "bold 16px default_family";
       };
       url = {
         default_page = "about:blank";
         start_pages = ["https://app.daily.dev/"];
       };
       window.transparent = true;
-      zoom.default = "150%";
+      zoom.default = "100%";
     };
 
     searchEngines = {
