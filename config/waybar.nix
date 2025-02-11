@@ -115,8 +115,8 @@ in
             tooltip-format-wifi = "{essid} {icon} {signalStrength}%";
             tooltip-format-ethernet = "{ifname} 󰌘";
             tooltip-format-disconnected = "󰌙 Disconnected";
-            min-length = 24;
-            max-length = 24;
+            min-length = 20;
+            max-length = 20;
             format-icons = [
               "󰤯"
               "󰤟"
@@ -264,7 +264,7 @@ in
             background: linear-gradient(45deg, #${config.stylix.base16Scheme.base08}, #${config.stylix.base16Scheme.base0D});
             transition: ${betterTransition};
             opacity: 1.0;
-            min-width: 40px;
+            min-width: 30px;
           }
           #workspaces button:hover {
             font-weight: bold;
@@ -286,18 +286,18 @@ in
             font-weight: bold;
             margin: 4px 0px;
             margin-left: 7px;
-            padding: 0px 18px;
+            padding: 0px 10px;
             background: #${config.stylix.base16Scheme.base04};
             color: #${config.stylix.base16Scheme.base00};
-            border-radius: 24px 10px 24px 10px;
+            border-radius: 12px 8px 12px 8px;
           }
           #custom-startmenu {
             color: #${config.stylix.base16Scheme.base0B};
             background: #${config.stylix.base16Scheme.base02};
             font-size: 28px;
             margin: 0px;
-            padding: 0px 30px 0px 15px;
-            border-radius: 0px 0px 40px 0px;
+            padding: 0px 20px 0px 10px;
+            border-radius: 0px 0px 20px 0px;
           }
           #custom-hyprbindings, #network, #battery,
           #custom-notification, #tray, #custom-exit {
@@ -306,16 +306,16 @@ in
             color: #${config.stylix.base16Scheme.base00};
             margin: 4px 0px;
             margin-right: 7px;
-            border-radius: 10px 24px 10px 24px;
-            padding: 0px 18px;
+            border-radius: 5px 12px 5px 12px;
+            padding: 0px 10px;
           }
           #clock {
             font-weight: bold;
             color: #0D0E15;
             background: linear-gradient(90deg, #${config.stylix.base16Scheme.base0E}, #${config.stylix.base16Scheme.base0C});
             margin: 0px;
-            padding: 0px 15px 0px 30px;
-            border-radius: 0px 0px 0px 40px;
+            padding: 0px 10px 0px 20px;
+            border-radius: 0px 0px 0px 20px;
           }
         ''
       ];
