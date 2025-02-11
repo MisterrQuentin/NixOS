@@ -47,7 +47,7 @@ in {
         pylint
         # JavaScript/TypeScript tools
         nodePackages.eslint_d
-        nodePackages.eslint
+        # nodePackages.eslint
       ];
 
       plugins = with pkgs.vimPlugins; [

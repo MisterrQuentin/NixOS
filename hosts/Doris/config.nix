@@ -287,7 +287,7 @@ in {
     virt-manager
     sshfs
     ncmpcpp
-    termusic
+    # termusic
     ytermusic
     mpc-cli
     lazygit

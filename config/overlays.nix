@@ -5,6 +5,47 @@ final: prev: {
     checkPhase = "true";
     installCheckPhase = "true";
   });
+  tmuxPlugins =
+    prev.tmuxPlugins
+    // {
+      resurrect = prev.tmuxPlugins.resurrect.overrideAttrs (oldAttrs: {
+        postInstall =
+          (oldAttrs.postInstall or "")
+          + ''
+            # Remove broken symlinks causing build failures
+            rm -f "$out/share/tmux-plugins/resurrect/run_tests"
+            rm -f "$out/share/tmux-plugins/resurrect/tests/run_tests_in_isolation"
+            rm -f "$out/share/tmux-plugins/resurrect/tests/helpers/helpers.sh"
+          '';
+      });
+    };
+
+  # tmuxPlugins.resurrect = prev.tmuxPlugins.resurrect.overrideAttrs (old: {
+  #   postInstall =
+  #     old.postInstall
+  #     + ''
+  #       # Remove the broken symlinks
+  #       rm -f ${old.package.out}/share/tmux-plugins/resurrect/run_tests
+  #       rm -f ${old.package.out}/share/tmux-plugins/resurrect/tests/run_tests_in_isolation
+  #       rm -f ${old.package.out}/share/tmux-plugins/resurrect/tests/helpers/helpers.sh
+  #
+  #       # Optional: Recreate the symlinks to the correct paths if necessary
+  #       # ln -s ${old.package.out}/share/tmux-plugins/resurrect/lib/tmux-test/run_tests ${old.package.out}/share/tmux-plugins/resurrect/run_tests
+  #       # ln -s ${old.package.out}/share/tmux-plugins/resurrect/lib/tmux-test/tests/run_tests_in_isolation ${old.package.out}/share/tmux-plugins/resurrect/tests/run_tests_in_isolation
+  #       # ln -s ${old.package.out}/share/tmux-plugins/resurrect/lib/tmux-test/tests/helpers/helpers.sh ${old.package.out}/share/tmux-plugins/resurrect/tests/helpers/helpers.sh
+  #     '';
+  # });
+
+  eslint = prev.eslint.overrideAttrs (old: {
+    postInstall =
+      (old.postInstall or "")
+      + ''
+        if [ -d "$out/lib/node_modules/eslint/packages/eslint-config-eslint" ]; then
+          ln -sfn $out/lib/node_modules/eslint/packages/eslint-config-eslint \
+                 $out/lib/node_modules/eslint/node_modules/
+        fi
+      '';
+  });
 
   signal-desktop = prev.stdenv.mkDerivation rec {
     pname = "signal-desktop";
