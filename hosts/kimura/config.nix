@@ -17,10 +17,10 @@ in {
     ./users.nix
     ./qtodotxt.nix
     ../../config/stylix.nix
-    # ../../modules/amd-drivers.nix
+    ../../modules/amd-drivers.nix
     ../../modules/nvidia-drivers.nix
-    # ../../modules/nvidia-prime-drivers.nix
-    # ../../modules/intel-drivers.nix
+    ../../modules/nvidia-prime-drivers.nix
+    ../../modules/intel-drivers.nix
     ../../modules/vm-guest-services.nix
     ../../modules/local-hardware-clock.nix
   ];
@@ -73,14 +73,14 @@ in {
   '';
 
   # Extra Module Options
-  # drivers.amdgpu.enable = false;
+  drivers.amdgpu.enable = false;
+  drivers.intel.enable = false;
   drivers.nvidia.enable = true;
-  # drivers.nvidia-prime = {
-  #    enable = true;
-  #    intelBusID = "PCI:0:2:0";
-  #    nvidiaBusID = "PCI:1:0:0";
-  # };
-  # drivers.intel.enable = true;
+  drivers.nvidia-prime = {
+    enable = false;
+    intelBusID = "";
+    nvidiaBusID = "";
+  };
   vm.guest-services.enable = false;
   # local.hardware-clock.enable = false;
 
@@ -287,7 +287,7 @@ in {
     virt-manager
     sshfs
     ncmpcpp
-    termusic
+    # termusic
     ytermusic
     mpc-cli
     lazygit
@@ -397,6 +397,9 @@ in {
     cool-retro-term
     cmatrix
     pipes-rs
+    docker
+    docker-compose
+
     # ghostty
 
     # Quentin installs

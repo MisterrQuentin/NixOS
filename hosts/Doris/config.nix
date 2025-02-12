@@ -17,10 +17,10 @@ in {
     ./users.nix
     ./qtodotxt.nix
     ../../config/stylix.nix
-    # ../../modules/amd-drivers.nix
+    ../../modules/amd-drivers.nix
     ../../modules/nvidia-drivers.nix
-    # ../../modules/nvidia-prime-drivers.nix
-    # ../../modules/intel-drivers.nix
+    ../../modules/nvidia-prime-drivers.nix
+    ../../modules/intel-drivers.nix
     ../../modules/vm-guest-services.nix
     ../../modules/local-hardware-clock.nix
   ];
@@ -73,14 +73,14 @@ in {
   '';
 
   # Extra Module Options
-  # drivers.amdgpu.enable = false;
+  drivers.amdgpu.enable = false;
+  drivers.intel.enable = false;
   drivers.nvidia.enable = true;
-  # drivers.nvidia-prime = {
-  #    enable = true;
-  #    intelBusID = "PCI:0:2:0";
-  #    nvidiaBusID = "PCI:1:0:0";
-  # };
-  # drivers.intel.enable = true;
+  drivers.nvidia-prime = {
+    enable = false;
+    intelBusID = "";
+    nvidiaBusID = "";
+  };
   vm.guest-services.enable = false;
   # local.hardware-clock.enable = false;
 
@@ -402,26 +402,24 @@ in {
 
     # ghostty
 
-    ### Quentin installs ###
-
-    ## Full apps ##
-    threema-desktop
+    # Quentin installs
     # obsidian
+    # mangohud
+    # protonup
     # steam
-    # stremio
-
-    ## Terminal apps ##
     # wlr-randr
-    # home-manager
-
-    # Packages
-    # mangohud # for steam
-    # protonup # for steam
-    # spice # for django
-    # spice-gtk # for django
-    # spice-protocol # for django
-
-    ### Quentin installs ###
+    # stremio
+    # spice
+    # spice-gtk
+    # spice-protocol
+    threema-desktop
+    #    python311Full
+    #    python311Packages.django
+    #    python311Packages.django-bootstrap3
+    #    python311Packages.pip
+    #    python311Packages.pipenv-poetry-migrate
+    #    sqlite
+    #    pipenv
 
     # Additional common build tools
     pkg-config

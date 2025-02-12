@@ -418,26 +418,24 @@ in {
 
     # ghostty
 
-    ### Quentin installs ###
-
-    ## Full apps ##
-    threema-desktop
+    # Quentin installs
     # obsidian
+    # mangohud
+    # protonup
     # steam
-    # stremio
-
-    ## Terminal apps ##
     # wlr-randr
-    # home-manager
-
-    # Packages
-    # mangohud # for steam
-    # protonup # for steam
-    # spice # for django
-    # spice-gtk # for django
-    # spice-protocol # for django
-
-    ### Quentin installs ###
+    # stremio
+    # spice
+    # spice-gtk
+    # spice-protocol
+    threema-desktop
+    #    python311Full
+    #    python311Packages.django
+    #    python311Packages.django-bootstrap3
+    #    python311Packages.pip
+    #    python311Packages.pipenv-poetry-migrate
+    #    sqlite
+    #    pipenv
 
     # Additional common build tools
     pkg-config
