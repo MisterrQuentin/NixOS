@@ -53,9 +53,10 @@ in
 
             # Monitor Configuration
             # monitor=[name],[resolution]@[refresh rate],[position],[scale]
-            monitor=eDP-1,1920x1080@165,1920x0,1 # Built-in laptop display
-            monitor=HDMI-A-5,1920x1080@240,0x0,1 # External monitor via HDMI
+            # monitor=eDP-1,1920x1080@165,1920x0,1 # Built-in laptop display
+            # monitor=HDMI-A-5,1920x1080@240,0x0,1 # External monitor via HDMI
 
+            monitor=eDP-1,1920x1200@120,auto,1
             # For automatic detection of new monitors:
             # monitor=,preferred,auto,1
 
