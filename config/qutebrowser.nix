@@ -127,10 +127,10 @@ in {
         "J" = "tab-prev";
         "<Alt-k>" = "tab-next";
         "<Alt-j>" = "tab-prev";
-        "pw" = "spawn --userscript qute-keepassxc --key 596B75C9472A5149CAA1312BF183573B709BD2C5";
+        "pw" = "spawn --userscript qute-keepassxc --key A5FB81C665B0B50394F9D65208E06F737783EA38";
       };
       insert = {
-        "<Alt-Shift-u>" = "spawn --userscript qute-keepassxc --key 596B75C9472A5149CAA1312BF183573B709BD2C5";
+        "<Alt-Shift-u>" = "spawn --userscript qute-keepassxc --key A5FB81C665B0B50394F9D65208E06F737783EA38";
       };
     };
 

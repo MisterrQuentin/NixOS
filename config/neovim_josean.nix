@@ -118,7 +118,6 @@ in {
         alpha-nvim
         neodev-nvim
         which-key-nvim
-        codeium-vim
         tokyonight-nvim
       ];
 
@@ -162,7 +161,6 @@ in {
         ${builtins.readFile ./nvim_josean/lua/josean/plugins/auto-session.lua}
         ${builtins.readFile ./nvim_josean/lua/josean/plugins/autopairs.lua}
         ${builtins.readFile ./nvim_josean/lua/josean/plugins/bufferline.lua}
-        ${builtins.readFile ./nvim_josean/lua/josean/plugins/codeium.lua}
         ${builtins.readFile ./nvim_josean/lua/josean/plugins/colorscheme.lua}
         ${builtins.readFile ./nvim_josean/lua/josean/plugins/comment.lua}
         ${builtins.readFile ./nvim_josean/lua/josean/plugins/dressing.lua}
