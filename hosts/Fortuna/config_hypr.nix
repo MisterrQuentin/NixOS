@@ -17,10 +17,10 @@ in {
     ./users.nix
     ./qtodotxt.nix
     ../../config/stylix.nix
-    ../../modules/amd-drivers.nix
+    # ../../modules/amd-drivers.nix
     ../../modules/nvidia-drivers.nix
-    ../../modules/nvidia-prime-drivers.nix
-    ../../modules/intel-drivers.nix
+    # ../../modules/nvidia-prime-drivers.nix
+    # ../../modules/intel-drivers.nix
     ../../modules/vm-guest-services.nix
     ../../modules/local-hardware-clock.nix
   ];
@@ -38,7 +38,7 @@ in {
     # Bootloader.
     loader.systemd-boot.enable = true;
     loader.efi.canTouchEfiVariables = true;
-    loader.timeout = 1;
+    initrd.luks.devices."luks-c2972d53-a8c7-4113-94b6-bef8661fc290".device = "/dev/disk/by-uuid/c2972d53-a8c7-4113-94b6-bef8661fc290";
     blacklistedKernelModules = ["nouveau"];
     # Make /tmp a tmpfs
     # tmp = {
@@ -57,8 +57,6 @@ in {
     # plymouth.enable = true;
   };
 
-  services.journald.extraConfig = "SystemMaxUse=50M";
-  systemd.services.NetworkManager-wait-online.wantedBy = lib.mkForce [];
   #Put appImages in the /opt diretory:
   # Create /opt/appimages directory
   system.activationScripts = {
@@ -76,14 +74,14 @@ in {
   '';
 
   # Extra Module Options
-  drivers.amdgpu.enable = false;
-  drivers.intel.enable = false;
+  # drivers.amdgpu.enable = false;
   drivers.nvidia.enable = true;
-  drivers.nvidia-prime = {
-    enable = false;
-    intelBusID = "";
-    nvidiaBusID = "";
-  };
+  # drivers.nvidia-prime = {
+  #    enable = true;
+  #    intelBusID = "PCI:0:2:0";
+  #    nvidiaBusID = "PCI:1:0:0";
+  # };
+  # drivers.intel.enable = true;
   vm.guest-services.enable = false;
   # local.hardware-clock.enable = false;
 
@@ -111,6 +109,11 @@ in {
   };
 
   programs = {
+    hyprland = {
+      enable = true;
+      withUWSM = true; # recommended for most users
+      xwayland.enable = true; # Xwayland can be disabled.
+    };
     ecryptfs = {
       enable = true;
     };
@@ -219,9 +222,9 @@ in {
     # };
   };
 
-  nixpkgs.overlays = [
-    (import ../../config/overlays.nix)
-  ];
+  # nixpkgs.overlays = [
+  #   (import ../../config/overlays.nix)
+  # ];
 
   nixpkgs.config.allowUnfree = true;
   # Enable CUDA support
@@ -237,8 +240,12 @@ in {
 
   nix.nixPath = ["nixpkgs=${inputs.nixpkgs}"];
 
+  # List packages installed in system profile. To search, run:
+  # $ nix search wget
+  environment.variables.EDITOR = "nvim";
+
   environment.systemPackages = with pkgs; [
-    vim
+    neovim
     wget
     killall
     eza
@@ -291,7 +298,7 @@ in {
     sshfs
     ncmpcpp
     # termusic
-    ytermusic
+    # ytermusic
     mpc-cli
     lazygit
     swappy
@@ -405,24 +412,26 @@ in {
 
     # ghostty
 
-    # Quentin installs
-    obsidian
-    # mangohud
-    # protonup
-    # steam
-    wlr-randr
-    stremio
-    # spice
-    # spice-gtk
-    # spice-protocol
+    ### Quentin installs ###
+
+    ## Full apps ##
     threema-desktop
-    #    python311Full
-    #    python311Packages.django
-    #    python311Packages.django-bootstrap3
-    #    python311Packages.pip
-    #    python311Packages.pipenv-poetry-migrate
-    #    sqlite
-    #    pipenv
+    # obsidian
+    # steam
+    # stremio
+
+    ## Terminal apps ##
+    # wlr-randr
+    # home-manager
+
+    # Packages
+    # mangohud # for steam
+    # protonup # for steam
+    # spice # for django
+    # spice-gtk # for django
+    # spice-protocol # for django
+
+    ### Quentin installs ###
 
     # Additional common build tools
     pkg-config
@@ -433,12 +442,12 @@ in {
       ${appimage-run}/bin/appimage-run /opt/appimages/$1
     '')
 
-    (writeShellScriptBin "tmux-restore" ''
-      ${pkgs.tmux}/bin/tmux start-server
-      ${pkgs.tmux}/bin/tmux new-session -d
-      ${pkgs.tmux}/bin/tmux run-shell "${pkgs.tmuxPlugins.resurrect}/share/tmux-plugins/resurrect/scripts/restore.sh"
-      ${pkgs.tmux}/bin/tmux attach-session -t 0
-    '')
+    # (writeShellScriptBin "tmux-restore" ''
+    #   ${pkgs.tmux}/bin/tmux start-server
+    #   ${pkgs.tmux}/bin/tmux new-session -d
+    #   ${pkgs.tmux}/bin/tmux run-shell "${pkgs.tmuxPlugins.resurrect}/share/tmux-plugins/resurrect/scripts/restore.sh"
+    #   ${pkgs.tmux}/bin/tmux attach-session -t 0
+    # '')
 
     (writeScriptBin "music-layout" ''
       #!${pkgs.bash}/bin/bash
@@ -655,30 +664,9 @@ in {
       port = 11434;
       # Add these lines to ensure GPU support
     };
-    # Enable Invidious
-    # invidious = {
-    #    enable = true;
-    #    port = 3000;
-    #    settings = lib.mkForce {
-    #      check_tables = true;
-    #      db = {
-    #        dbname = "invidious";
-    #        host = "";
-    #        password = "";
-    #        port = 3000;
-    #        user = "invidious";
-    #      };
-    #      host_binding = "0.0.0.0";
-    #      default_user_preferences = {
-    #        locale = "en-US";
-    #        region = "US";
-    #      };
-    #      captions = [
-    #        "English"
-    #        "English (auto-generated)"
-    #      ];
-    #   };
-    # };
+    # Enable the KDE Plasma Desktop Environment.
+    # displayManager.sddm.enable = true;
+    # desktopManager.plasma6.enable = true;
     greetd = {
       enable = true;
       vt = 3;
@@ -802,13 +790,7 @@ in {
 
   # Virtualization / Containers
   virtualisation = {
-    libvirtd = {
-      enable = true;
-      # qemu = {
-      #   swtpm.enable = true;
-      #   ovmf.enable = true;
-      # };
-    };
+    libvirtd.enable = true;
     docker = {
       enable = true;
       enableOnBoot = true;
@@ -832,16 +814,6 @@ in {
       };
     };
   };
-  # users.users.jedwick = {
-  #   extraGroups = ["libvirtd" "kvm" "input"];
-  # };
-  # services.spice-vdagentd.enable = true;
-  #
-  # services.udev.extraRules = ''
-  #   SUBSYSTEM=="usb", ENV{DEVTYPE}=="usb_device", MODE="0664", GROUP="kvm"
-  #   SUBSYSTEM=="vhost-net", GROUP="kvm", MODE="0660"
-  # '';
-  # end q changes
 
   # Wireguard: UNCOMMENT to have a wireguard tunnel. put the config files in /etc/nixos/wireguard:
   # .rw-r--r-- 290 root 30 Sep 08:35  jp-osa-wg-001.conf
@@ -878,5 +850,8 @@ in {
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "23.11"; # Did you read the comment?
+  system.stateVersion = "24.11"; # Did you read the comment?
+
 }
+
+

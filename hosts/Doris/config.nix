@@ -38,6 +38,7 @@ in {
     # Bootloader.
     loader.systemd-boot.enable = true;
     loader.efi.canTouchEfiVariables = true;
+    loader.timeout = 1;
     blacklistedKernelModules = ["nouveau"];
     # Make /tmp a tmpfs
     # tmp = {
@@ -56,6 +57,8 @@ in {
     # plymouth.enable = true;
   };
 
+  services.journald.extraConfig = "SystemMaxUse=50M";
+  systemd.services.NetworkManager-wait-online.wantedBy = lib.mkForce [];
   #Put appImages in the /opt diretory:
   # Create /opt/appimages directory
   system.activationScripts = {

@@ -1,8 +1,331 @@
-# put your ssh hosts here like the following
-        Host *
-          ServerAliveInterval 600
-        Host vm
-          HostName 192.168.122.120
-          Port 22
-          User root
+Host *
+  ServerAliveInterval 600
+Host github.com
+    User git
+    IdentityAgent SSH_AUTH_SOCK
+Host sparrow
+  HostName 192.168.122.120
+  Port 22
+    User bimmer
+Host sparrow1
+  HostName 192.168.122.219
+  Port 22
+    User bimmer
+Host bmw
+  HostName 93.95.230.182
+  User root
+  #Port 54321
+Host gelande
+    HostName 89.147.108.99
+    User root
+Host vultr_bimmer21
+  # GONE!
+    HostName 104.156.237.103
+    User root
+Host qnap_holesail
+  HostName 192.168.1.131
+    Port 5563
+    User bimmer
+Host qnap_portainer
+    HostName 192.168.1.131
+    User bimmer
+Host homeassistant
+    HostName 192.168.1.33
+    User bimmer
+Host immich
+    HostName 192.168.1.148
+    User bimmer
+Host coolmoto
+  # This is vultr still active
+  HostName 144.202.36.207
+    Port 54323
+    User root
+Host proxmox_remote
+    HostName 70.163.185.234
+    Port 49176
+    User root
+Host uptime-kuma
+    HostName 192.168.1.109
+    User root
+Host frigate-dawg
+    HostName 192.168.1.165
+    User bimmer
+Host proxmox2
+    HostName 192.168.1.39
+    Port 22
+    User root
+Host proxmox
+    HostName 192.168.1.226
+    Port 49176
+    User root
+Host ncp-private
+    HostName 192.168.1.31
+    User pi
+Host ncp-public
+    HostName 192.168.1.30
+    User pi
+Host theia
+    HostName 192.168.8.180
+    User bimmer
+Host vultr_xray2
+  # GONE!
+    HostName 208.72.155.126
+    User root
+Host vultr_xray3
+  # GONE!
+    HostName 45.32.134.244
+    User root
+Host bitlaunch_reality_romania
+    HostName 64.7.198.84
+    User root
+Host vultr_reality_paris
+  # GONE!
+    HostName 199.247.11.218
+    User root
+Host 1984_zaps
+    HostName 89.147.111.143
+    User bimmer
+Host korea_reality
+    HostName 154.90.62.170
+    User root
+Host 1984_2
+  # this is the old usfedreserve tunnel which will expire
+    HostName 195.246.230.113
+    User wg
+    Port 28172
+Host 1984_3
+  # this is the new usfedreserve wg tunnel
+    HostName 93.95.231.73
+    User wg
+Host 1984_4
+  # this is the new selfhost home wg tunnel (GONE!)
+    HostName 195.246.230.140
+    User wg
+Host vultr_temp
+  # this is the new selfhost home wg tunnel at vultr (GONE!)
+    HostName 149.28.88.58
+    User wg
+Host vultr_wg
+  # this is the new selfhost home wg tunnel at vultr (GONE!)
+    HostName 45.63.93.114
+    User wg
+Host digocean_wg
+  # this is the new selfhost home wg tunnel at digitalocean
+    HostName 143.198.236.218
+    User wg
+Host searx
+    HostName 185.112.147.8
+    Port 48650
+    User root
+Host jed
+    HostName 192.168.1.103
+    User jedwick
+Host jed_wg
+    HostName 93.95.230.13
+    User wg
+Host orange
+    HostName 192.168.1.163
+    User ubuntu
+    Port 54345
+Host zap
+    HostName 192.168.1.156
+    User bimmer
+Host orange2
+    HostName 192.168.8.197
+    User bimmer
+Host pluto
+    HostName 192.168.1.120
+    User bimmer
+Host ha
+    HostName 192.168.1.33
+    User hassio
+Host triton
+    HostName 192.168.1.69
+    User bimmer
+Host china-prox
+    HostName 192.168.1.186
+    User root
+Host china-yams
+    HostName 192.168.8.102
+    User bimmer
+Host china-pihole
+    HostName 192.168.8.234
+    User root
+Host china-glinet
+    HostName 192.168.8.245
+    User root
+Host eclipse
+    HostName 192.168.1.25
+    User bimmer
+Host relay
+    HostName 192.168.1.211
+    User nostr
+Host elitedesk
+    HostName 192.168.1.37
+    User bimmer
+Host interamnia
+    HostName 192.168.8.105
+    User bimmer
+Host secret
+  #HostName 192.168.8.103
+    HostName 192.168.1.31
+    User ubuntu
+Host sl
+    HostName 89.147.111.57
+    User sl
+Host prox_tor
+    HostName fldrfljejugp2sr5iap354ciy5oogkvxpncy6mt6iz2yemm74fc6k6yd.onion
+    User root
+Host prox2_tor
+    HostName a3tbh4l2vhksbtjy5docaywa4pyf3nb3gmqtv3l3e5pevyk4tebc27qd.onion
+    User root
+Host x200_tor
+    HostName dcwdo7jvdau7lanv5vuqw2pxmui3fokgrszqfhfwwix5ytzziq66jqyd.onion
+    User bimmer
+Host prox-blog
+    HostName 192.168.1.107
+    User bimmer
+Host proxcln
+    HostName 192.168.1.223
+    User bimmer
+Host x200
+    HostName 192.168.1.219
+    User bimmer
+Host lili
+    HostName 192.168.1.138
+    Port 44765
+    User bimmer
+Host ceres_liliclone
+    HostName 192.168.1.221
+    User bimmer
+Host mynode
+    HostName 192.168.1.35
+    User admin
+Host wiki
+    HostName 192.168.1.204
+    User bimmer
+Host psyche
+    HostName 192.168.122.208
+    User bimmer
+Host ntfy
+  # This is Vultr still active!
+    HostName 202.182.116.189
+    Port 44767
+    User bimmer
+Host lemp
+    HostName 192.168.1.134
+    User bimmer
+Host pivpn
+    HostName 192.168.1.119
+    User root
+Host pihole
+    HostName 192.168.1.234
+    User root
+Host ncp-prox
+    HostName 192.168.1.32
+    User bimmer
+Host nginx-proxymgr
+    HostName 192.168.1.179
+    User bimmer
+Host plex
+    HostName 192.168.1.225
+    User root
+Host frigate
+    HostName 192.168.1.179
+    User root
+Host plex2
+    HostName 192.168.1.216
+    User root
+Host onyx
+    HostName 192.168.1.36
+    User bimmer
+Host helm2_tor
+    HostName hasiuguzanu3vvqoju6kuyjgy4xx4w7tkky75u7skp5mf2dukyy2meid.onion
+    User bimmer
+Host elitedesk_tor
+    HostName ii5biwj6ynb4twm4lkcnto5awfjxm6bwpm4ge7xgasofhnow46ahuayd.onion
+    User bimmer
+Host truenas
+    HostName 192.168.1.34
+    User admin
+Host usg
+    HostName 192.168.1.1
+    User ubnt
+Host ddclient-motard
+    HostName 192.168.1.208
+    User bimmer
+Host ddclient-uscloud
+    HostName 192.168.1.145
+    User bimmer
+Host backup_cloud_clear
+    HostName uscloud.dedyn.io
+    User ubuntu
+    Port 54345
+Host cloud
+    HostName 192.168.1.163
+    User ubuntu
+Host cloud_clear
+    HostName uscloud.dedyn.io
+    User ubuntu
+Host cloud_tor
+    HostName nlvrktnkqmgu4wykwkwol4ay4v2wmggkhrhmjnjkftv74ubddyr2pdqd.onion
+    User ubuntu
+Host prox_clear
+    HostName uscloud.dedyn.io
+    User root
+Host jedwick_phoenix
+    HostName 192.168.1.21
+    User jedwick
+    Port 54324
+Host jedwick_tucson
+    HostName 68.106.35.237
+    User jedwick
+Host quentin_phoenix
+    HostName 192.168.1.21
+    User bimmer
+    Port 54324
+Host quentin_tucson
+    HostName 68.106.35.237
+    User bimmer
+    Port 54324
+Host yams
+    HostName 192.168.1.133
+    User bimmer
+Host hypr_qtile
+    HostName 192.168.1.16
+    User bimmer
+Host doris
+    HostName 192.168.1.141
+    User bimmer
+Host thisbe
+    HostName 192.168.1.137
+    User bimmer
+Host mybook
+    HostName 192.168.1.217
+    User chris
+Host phone
+    HostName 192.168.5.171
+    #HostName 192.168.7.138
+    #HostName 192.168.1.60
+    #HostName 192.168.7.184
+    Port 8022
+Host bamberga
+  HostName 192.168.1.204
+  User bimmer
+Host dad_proxmox
+  HostName 192.168.1.64
+  User bimmer
+Host dad_yams
+  HostName 192.168.1.142
+  User bimmer
+Host dad_pivpn
+  HostName 192.168.1.147
+  User bimmer
+Host dad_npm
+  HostName 192.168.1.144
+  User bimmer
+Host encrypted_drive_remote
+  HostName txcloud.dedyn.io
+  User bimmer
+  Port 54327
 
